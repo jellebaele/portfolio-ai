@@ -1,70 +1,143 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
+
+@theme {
+  /* This block tells Tailwind v4: 
+    "When I use 'bg-background', use the variable --background" 
+  */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  /* Custom Lovable Variables */
+  --color-chat-user: hsl(var(--chat-user));
+  --color-chat-ai: hsl(var(--chat-ai));
+  --color-glow: hsl(var(--glow));
+
+  /* Sidebar Variables */
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  /* Radius Mapping */
+  --radius-xl: var(--radius);
+  --radius-lg: calc(var(--radius) - 2px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 8px);
+}
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Your Original Design Tokens */
+  --background: 220 20% 10%;
+  --foreground: 210 20% 92%;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --card: 220 18% 13%;
+  --card-foreground: 210 20% 92%;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  --popover: 220 18% 13%;
+  --popover-foreground: 210 20% 92%;
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+  --primary: 175 70% 50%;
+  --primary-foreground: 220 20% 6%;
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
+  --secondary: 220 16% 18%;
+  --secondary-foreground: 210 20% 85%;
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+  --muted: 220 14% 16%;
+  --muted-foreground: 215 15% 55%;
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  --accent: 175 70% 50%;
+  --accent-foreground: 220 20% 6%;
+
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 220 14% 20%;
+  --input: 220 14% 20%;
+  --ring: 175 70% 50%;
+
+  --radius: 0.75rem;
+
+  --chat-user: 220 16% 18%;
+  --chat-ai: 220 18% 13%;
+  --glow: 175 70% 50%;
+
+  --sidebar-background: 220 20% 10%;
+  --sidebar-foreground: 210 20% 92%;
+  --sidebar-primary: 175 70% 50%;
+  --sidebar-primary-foreground: 220 20% 6%;
+  --sidebar-accent: 220 16% 18%;
+  --sidebar-accent-foreground: 210 20% 85%;
+  --sidebar-border: 220 14% 20%;
+  --sidebar-ring: 175 70% 50%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@layer base {
+  * {
+    /* This will now work because --color-border is defined in @theme */
+    @apply border-border;
   }
-  a:hover {
-    color: #747bff;
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+@layer utilities {
+  .glow-sm {
+    box-shadow: 0 0 12px -3px hsl(var(--glow) / 0.3);
   }
+  .glow-md {
+    box-shadow: 0 0 24px -6px hsl(var(--glow) / 0.25);
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    /* We use regular CSS here to ensure the gradient is perfect */
+    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(175 90% 70%));
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
 }
