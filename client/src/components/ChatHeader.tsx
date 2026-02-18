@@ -1,4 +1,5 @@
 import { Terminal } from 'lucide-react';
+import LanguageSelector from './LanguageSelector';
 
 const ChatHeader = () => {
   return (
@@ -12,9 +13,12 @@ const ChatHeader = () => {
           <p className='text-xs text-muted-foreground'>AI Portfolio Assistant</p>
         </div>
       </div>
-      <div className='flex items-center gap-1.5'>
-        <div className='h-2 w-2 rounded-full bg-primary animate-pulse' />
-        <span className='text-xs text-muted-foreground'>Online</span>
+      <div className='flex items-center gap-3'>
+        <LanguageSelector />
+        <div className='flex items-center gap-1.5'>
+          <div className='h-2 w-2 rounded-full bg-primary animate-pulse' />
+          <span className='text-xs text-muted-foreground'>Online</span>
+        </div>
       </div>
     </header>
   );
