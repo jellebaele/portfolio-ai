@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Send } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type Message = {
   id: string;
@@ -15,6 +16,7 @@ type ChatInputProps = {
 const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
   const [input, setInput] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -46,7 +48,7 @@ const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder='Ask me anything...'
+          placeholder={t('chatInput.placeholder')}
           rows={1}
           className='flex-1 resize-none bg-transparent px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none'
         />

@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import './App.css';
+import './i18n';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 
