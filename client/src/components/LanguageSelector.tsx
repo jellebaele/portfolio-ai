@@ -1,15 +1,19 @@
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const supportedLanguages: { code: string; label: string }[] = [
+type Language = { code: string; label: string };
+
+const supportedLanguages: Language[] = [
   { code: 'en', label: 'English' },
   { code: 'nl', label: 'Nederlands' },
 ];
 
 const LanguageSelector = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const [activeLanguage, setActiveLanguage] = useState('en');
+  const [activeLanguage, setActiveLanguage] = useState<Language>({ code: 'en', label: 'English' });
+  const { i18n } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,6 +28,12 @@ const LanguageSelector = () => {
     };
   }, []);
 
+  const handleLanguageChange = (newLanguage: Language) => {
+    setActiveLanguage(newLanguage);
+    setOpen(false);
+    i18n.changeLanguage(newLanguage.code);
+  };
+
   return (
     <div
       className='relative'
@@ -31,7 +41,7 @@ const LanguageSelector = () => {
       <button
         className='flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-primary/40'
         onClick={() => setOpen((open) => !open)}>
-        English
+        {activeLanguage.label}
         <ChevronDown
           className={`h-3 w-3 text-muted-foreground transition-transform ${open ? 'rotate-180' : ''}`}
         />
@@ -50,8 +60,11 @@ const LanguageSelector = () => {
               <button
                 key={language.code}
                 className={`flex w-full items-center px-3 py-2 text-xs transition-colors hover:bg-accent ${
-                  activeLanguage === language.code ? 'text-primary font-medium' : 'text-foreground'
-                }`}>
+                  activeLanguage.code === language.code
+                    ? 'text-primary font-medium'
+                    : 'text-foreground'
+                }`}
+                onClick={() => handleLanguageChange(language)}>
                 {language.label}
               </button>
             ))}
