@@ -61,9 +61,7 @@ const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
           <Send className='h-4 w-4' />
         </motion.button>
       </div>
-      <p className='mt-2 text-center text-xs text-muted-foreground'>
-        AI-powered responses about my experience, skills, and projects.
-      </p>
+      <p className='mt-2 text-center text-xs text-muted-foreground'>{t('chatInput.footer')}</p>
     </div>
   );
 };

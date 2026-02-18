@@ -1,5 +1,30 @@
 {
   "chatInput": {
-    "placeholder": "Vraag me wat je wilt..."
+    "placeholder": "Vraag me wat je wilt...",
+    "footer": "AI-gestuurde antwoorden over mijn ervaring, vaardigheden en projecten."
+  },
+  "welcomeScreen": {
+    "welcomeTitle": {
+      "title": "Hallo, ik ben",
+      "subTitle": "Software Ingenieur. Stel me vragen over mijn vaardigheden, ervaring of projecten — mogelijk gemaakt door AI."
+    },
+    "suggestions": {
+      "technical": {
+        "label": "Technische Vaardigheden",
+        "question": "Met welke programmeertalen en technologieën werk je?"
+      },
+      "experience": {
+        "label": "Ervaring",
+        "question": "Vertel me over je meest impactvolle project en jouw rol daarin."
+      },
+      "background": {
+        "label": "Achtergrond",
+        "question": "Wat is je opleidingsachtergrond en hoe ben je in de ontwikkeling terechtgekomen?"
+      },
+      "hireMe": {
+        "label": "Waarom mij aannemen?",
+        "question": "Wat maakt jou uniek als ontwikkelaar en teamgenoot?"
+      }
+    }
   }
 }

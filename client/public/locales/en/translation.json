@@ -1,5 +1,30 @@
 {
   "chatInput": {
-    "placeholder": "Ask my anything..."
+    "placeholder": "Ask my anything...",
+    "footer": "AI-powered responses about my experience, skills, and projects."
+  },
+  "welcomeScreen": {
+    "welcomeTitle": {
+      "title": "Hi, I'm",
+      "subTitle": "Software Engineer. Ask me anything about my skills, experience, or projects — powered by AI."
+    },
+    "suggestions": {
+      "technical": {
+        "label": "Technical Skills",
+        "question": "What programming languages and technologies do you work with?"
+      },
+      "experience": {
+        "label": "Experience",
+        "question": "Tell me about your most impactful project and your role in it."
+      },
+      "background": {
+        "label": "Background",
+        "question": "What is your educational background and how did you get into development?"
+      },
+      "hireMe": {
+        "label": "Why Hire Me",
+        "question": "What makes you stand out as a developer and teammate?"
+      }
+    }
   }
 }
