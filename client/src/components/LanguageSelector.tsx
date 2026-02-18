@@ -1,19 +1,11 @@
+import { useLanguage, type Language } from '@/context/LuanguageContext';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-
-type Language = { code: string; label: string };
-
-const supportedLanguages: Language[] = [
-  { code: 'en', label: 'English' },
-  { code: 'nl', label: 'Nederlands' },
-];
 
 const LanguageSelector = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const [activeLanguage, setActiveLanguage] = useState<Language>({ code: 'en', label: 'English' });
-  const { i18n } = useTranslation();
+  const { language, setLanguage, supportedLanguages } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,9 +21,8 @@ const LanguageSelector = () => {
   }, []);
 
   const handleLanguageChange = (newLanguage: Language) => {
-    setActiveLanguage(newLanguage);
+    setLanguage(newLanguage);
     setOpen(false);
-    i18n.changeLanguage(newLanguage.code);
   };
 
   return (
@@ -41,7 +32,7 @@ const LanguageSelector = () => {
       <button
         className='flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-primary/40'
         onClick={() => setOpen((open) => !open)}>
-        {activeLanguage.label}
+        {language.label}
         <ChevronDown
           className={`h-3 w-3 text-muted-foreground transition-transform ${open ? 'rotate-180' : ''}`}
         />
@@ -60,9 +51,7 @@ const LanguageSelector = () => {
               <button
                 key={language.code}
                 className={`flex w-full items-center px-3 py-2 text-xs transition-colors hover:bg-accent ${
-                  activeLanguage.code === language.code
-                    ? 'text-primary font-medium'
-                    : 'text-foreground'
+                  language.code === language.code ? 'text-primary font-medium' : 'text-foreground'
                 }`}
                 onClick={() => handleLanguageChange(language)}>
                 {language.label}
