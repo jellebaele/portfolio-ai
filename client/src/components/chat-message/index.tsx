@@ -15,13 +15,15 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className='w-full max-w-3xl mx-auto px-4'>
+      className='w-full max-w-3xl mx-auto px-4'
+    >
       <div className={`flex gap-3 py-4 ${isUser ? 'justify-end' : ''}`}>
         {!isUser && <MessageAvatar isUser={isUser} />}
         <div
           className={`rounded-2xl text-left px-4 py-3 text-sm leading-relaxed max-w-[85%] ${
             isUser ? 'bg-chat-user text-foreground' : 'bg-transparent text-foreground'
-          }`}>
+          }`}
+        >
           {isUser ? (
             <p>{message.content}</p>
           ) : (

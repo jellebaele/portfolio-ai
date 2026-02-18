@@ -13,7 +13,8 @@ const LoadingScreen = () => {
           className='relative flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/30 bg-primary/10'
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}>
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
           <svg
             viewBox='0 0 24 24'
             className='h-7 w-7 text-primary'
@@ -21,19 +22,15 @@ const LoadingScreen = () => {
             stroke='currentColor'
             strokeWidth={1.8}
             strokeLinecap='round'
-            strokeLinejoin='round'>
+            strokeLinejoin='round'
+          >
             <polyline points='4 17 10 11 4 5' />
-            <line
-              x1='12'
-              y1='19'
-              x2='20'
-              y2='19'
-            />
+            <line x1='12' y1='19' x2='20' y2='19' />
           </svg>
         </motion.div>
       </div>
       <div className='mt-10 flex items-center gap-2'>
-        {[0, 1, 2].map((i) => (
+        {[0, 1, 2].map(i => (
           <motion.span
             key={i}
             className='h-1.5 w-1.5 rounded-full bg-primary'
@@ -42,7 +39,7 @@ const LoadingScreen = () => {
               duration: 1.2,
               repeat: Infinity,
               delay: i * 0.2,
-              ease: 'easeInOut',
+              ease: 'easeInOut'
             }}
           />
         ))}
@@ -51,7 +48,8 @@ const LoadingScreen = () => {
         className='mt-4 text-xs tracking-widest text-muted-foreground uppercase'
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.6 }}>
+        transition={{ delay: 0.4, duration: 0.6 }}
+      >
         Loading
       </motion.p>
     </div>

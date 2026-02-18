@@ -5,7 +5,7 @@ export type Language = { code: string; label: string };
 
 const supportedLanguages: Language[] = [
   { code: 'en', label: 'English' },
-  { code: 'nl', label: 'Nederlands' },
+  { code: 'nl', label: 'Nederlands' }
 ];
 
 interface LanguageContextType {
@@ -20,7 +20,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   const { i18n } = useTranslation();
 
   const [language, setLanguageState] = useState<Language>(
-    supportedLanguages.find((l) => l.code === i18n.language) || supportedLanguages[0],
+    supportedLanguages.find(l => l.code === i18n.language) || supportedLanguages[0]
   );
 
   const setLanguage = (newLang: Language) => {

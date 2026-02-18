@@ -8,7 +8,7 @@ import { AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
 const getMockResponse = async (question: string): Promise<string> => {
-  await new Promise((r) => setTimeout(r, 1200 + Math.random() * 800));
+  await new Promise(r => setTimeout(r, 1200 + Math.random() * 800));
   return `Thanks for asking! This is a placeholder response. Connect your own LLM backend to provide real answers about your experience, skills, and projects.\n\nYou asked: "${question}"\n\nTo set this up, replace the \`getMockResponse\` function in \`src/pages/Index.tsx\` with your actual API call.`;
 };
 
@@ -21,7 +21,7 @@ const HomePage = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
-        behavior: 'smooth',
+        behavior: 'smooth'
       });
     }
   };
@@ -34,9 +34,9 @@ const HomePage = () => {
     const userMsg: Message = {
       id: crypto.randomUUID(),
       role: 'user',
-      content,
+      content
     };
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
 
     try {
@@ -44,9 +44,9 @@ const HomePage = () => {
       const aiMsg: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: response,
+        content: response
       };
-      setMessages((prev) => [...prev, aiMsg]);
+      setMessages(prev => [...prev, aiMsg]);
     } catch (err) {
       console.error('Failed to get response:', err);
     } finally {
@@ -59,19 +59,14 @@ const HomePage = () => {
   return (
     <div className='flex h-screen flex-col bg-background'>
       <ChatHeader />
-      <div
-        ref={scrollRef}
-        className='flex flex-1 flex-col overflow-y-auto'>
+      <div ref={scrollRef} className='flex flex-1 flex-col overflow-y-auto'>
         {!hasMessages ? (
           <WelcomeScreen onSuggestionClick={handleSend} />
         ) : (
           <div className='flex flex-col py-4'>
             <AnimatePresence>
-              {messages.map((msg) => (
-                <ChatMessage
-                  key={msg.id}
-                  message={msg}
-                />
+              {messages.map(msg => (
+                <ChatMessage key={msg.id} message={msg} />
               ))}
             </AnimatePresence>
             {isLoading && <TypingIndicator />}
@@ -79,10 +74,7 @@ const HomePage = () => {
         )}
       </div>
 
-      <ChatInput
-        onSend={handleSend}
-        isLoading={isLoading}
-      />
+      <ChatInput onSend={handleSend} isLoading={isLoading} />
     </div>
   );
 };

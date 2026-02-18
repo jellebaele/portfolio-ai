@@ -46,7 +46,7 @@ const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
         <textarea
           ref={textareaRef}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={t('chatInput.placeholder')}
           rows={1}
@@ -57,7 +57,8 @@ const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
           whileTap={{ scale: 0.95 }}
           onClick={handleSubmit}
           disabled={!input.trim() || isLoading}
-          className='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:opacity-30'>
+          className='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:opacity-30'
+        >
           <Send className='h-4 w-4' />
         </motion.button>
       </div>
