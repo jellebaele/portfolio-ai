@@ -37,7 +37,7 @@ const WelcomeScreen = ({ onSuggestionClick }: WelcomeScreenProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className='text-center mb-10'>
+        className='text-center mb-5'>
         <WelcomeTitle />
       </motion.div>
 
