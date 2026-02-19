@@ -1,4 +1,4 @@
-import { config } from '@/config';
+import { config, isProduction } from '@/config';
 import cors from 'cors';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
@@ -12,7 +12,7 @@ export const createApp = (): Express => {
   // Security & Logging
   app.use(helmet());
   app.use(cors());
-  app.use(morgan(config.nodeEnv === 'development' ? 'dev' : 'combined'));
+  app.use(morgan(isProduction ? 'combined' : 'dev'));
   app.use(rateLimit(config.ratelimit));
 
   // Parsers
