@@ -1,5 +1,6 @@
-import app from './app';
+import { setupServer } from './api/config/server';
 
+const app = setupServer();
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
