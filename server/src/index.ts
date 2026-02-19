@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { setupServer } from './api/config/server';
 
 const app = setupServer();
