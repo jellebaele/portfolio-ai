@@ -17,12 +17,17 @@
     "morgan": "^1.10.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@tsconfig/node22": "^22.0.5",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.2.3",
+    "eslint": "^10.0.0",
+    "globals": "^17.3.0",
+    "jiti": "^2.6.1",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0"
   }
 }
