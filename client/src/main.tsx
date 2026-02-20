@@ -7,18 +7,18 @@ import { ThemeProvider } from './context/ThemeContext.tsx';
 import './index.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ComposeProviders } from './utils/ComposeProviders.tsx';
 
 const queryClient = new QueryClient();
+const providers = [ThemeProvider, LanguageProvider];
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Suspense fallback={<LoadingScreen />}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <LanguageProvider>
-            <App />
-          </LanguageProvider>
-        </ThemeProvider>
+        <ComposeProviders providers={providers}>
+          <App />
+        </ComposeProviders>
       </QueryClientProvider>
     </Suspense>
   </StrictMode>
