@@ -1,4 +1,9 @@
 {
+  "common": {
+    "errors": {
+      "connection": "Het spijt me, ik heb momenteel moeite om verbinding te maken met mijn brein. Probeer het later opnieuw"
+    }
+  },
   "chatInput": {
     "placeholder": "Vraag me wat je wilt...",
     "footer": "AI-gestuurde antwoorden over mijn ervaring, vaardigheden en projecten."
