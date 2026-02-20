@@ -1,6 +1,6 @@
 import { config } from '@/config';
 import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai';
-import { ILlmProvider } from '../ILlmProvder';
+import { ILlmProvider } from '../ILlmProvider';
 
 export default class GeminiProvider implements ILlmProvider {
   private model: GenerativeModel;

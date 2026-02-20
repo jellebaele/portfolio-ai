@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const supportedModels = ['gemini-2.5-flash', 'gemini-2.5-flash-lite'];
+const supportedProviders = ['gemini'] as const;
 
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
 
@@ -13,10 +14,11 @@ export const envSchema = z.object({
   UPSTASH_VECTOR_REST_TOKEN: z.string().min(1),
   UPSTASH_REDIS_REST_URL: z.string().min(1),
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
-  LLM_PROVIDER: z.enum(['gemini']),
+  LLM_PROVIDER: z.enum(supportedProviders),
   LLM_API_KEY: z.string().min(1),
   LLM_PRIMARY_MODEL: z.enum(supportedModels),
   LLM_FALLBACK_MODEL: z.enum(supportedModels)
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;
+export type SupportProviders = (typeof supportedProviders)[number];

@@ -1,21 +1,22 @@
 import { config } from '@/config';
-import { ILlmProvider } from './ILlmProvder';
+import { SupportProviders } from '@/schemas/envSchema';
+import { ILlmProvider } from './ILlmProvider';
 import GeminiProvider from './providers/GeminiProvider';
 import { SYSTEM_INSTRUCTION } from './systemInstruction';
 
 export default class LlmFactory {
   private static instance: ILlmProvider;
 
-  static create(): ILlmProvider {
+  static create(provider: SupportProviders): ILlmProvider {
     if (!LlmFactory.instance) {
-      return LlmFactory.build();
+      return LlmFactory.build(provider);
     }
 
     return this.instance;
   }
 
-  private static build(): ILlmProvider {
-    switch (config.llm.provider) {
+  private static build(provider: SupportProviders): ILlmProvider {
+    switch (provider) {
       case 'gemini':
         return new GeminiProvider(SYSTEM_INSTRUCTION);
       default:

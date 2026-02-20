@@ -1,6 +1,6 @@
 import { redis } from '@/database/redis';
 import { vectorIndex } from '@/database/vectorDatabase';
-import { ILlmProvider } from '@/llm/ILlmProvder';
+import { ILlmProvider } from '@/llm/ILlmProvider';
 import { ChatResponseDto, Message } from '@/schemas/chatSchema';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,7 +17,7 @@ export default class ResumeService {
 
   async processChatMessage(messages: Message[]): Promise<ChatResponseDto> {
     const trimmedHistory = messages.slice(-MAX_HISTORY);
-    const lastUserPrompt = trimmedHistory.filter(m => m.role === 'user')[trimmedHistory.length - 1];
+    const lastUserPrompt = trimmedHistory.filter(m => m.role === 'user').at(-1);
 
     if (!lastUserPrompt) throw new Error('No user message found');
 
