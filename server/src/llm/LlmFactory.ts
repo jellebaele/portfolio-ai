@@ -1,27 +1,16 @@
-import { SupportProviders } from '@/schemas/envSchema';
-import { ILlmProvider } from './ILlmProvider';
+import { ILlmProvider, LlmConfig } from './ILlmProvider';
 import GeminiProvider from './providers/GeminiProvider';
 import { GroqProvider } from './providers/GroqProvider';
 
 export default class LlmFactory {
-  private static instance: ILlmProvider;
-
-  static create(provider: SupportProviders): ILlmProvider {
-    if (!LlmFactory.instance) {
-      return LlmFactory.build(provider);
-    }
-
-    return this.instance;
-  }
-
-  private static build(provider: SupportProviders): ILlmProvider {
-    switch (provider) {
+  static create(llmConfig: LlmConfig): ILlmProvider {
+    switch (llmConfig.type) {
       case 'gemini':
-        return new GeminiProvider();
+        return new GeminiProvider(llmConfig);
       case 'groq':
-        return new GroqProvider();
+        return new GroqProvider(llmConfig);
       default:
-        throw new Error(`Unsupported LLM provider: ${provider}`);
+        throw new Error(`Unsupported LLM provider: ${llmConfig.type}`);
     }
   }
 }

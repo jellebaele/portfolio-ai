@@ -1,7 +1,18 @@
+import { config } from '@/config';
+import { LlmConfig } from './ILlmProvider';
 import LlmFactory from './LlmFactory';
 import LlmManager from './LlmManager';
 
-const gemini = LlmFactory.create('gemini');
-const groq = LlmFactory.create('groq');
+const llmProviders: LlmConfig[] = [
+  { type: 'gemini', apiKey: config.llm.apiKeyGemini, modelName: config.llm.modelNameGemini },
+  {
+    type: 'gemini',
+    apiKey: config.llm.apiKeyGemini,
+    modelName: config.llm.modelNameGeminiLite
+  },
+  { type: 'groq', apiKey: config.llm.apiKeyGroq, modelName: config.llm.modelNameGroq }
+];
 
-export const llmProvider = new LlmManager([gemini, groq]);
+const providers = llmProviders.map(p => LlmFactory.create(p));
+
+export const llmProvider = new LlmManager(providers);

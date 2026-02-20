@@ -18,9 +18,12 @@ export const envSchema = z.object({
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
   LLM_API_KEY_GEMINI: z.string().min(1),
   LLM_MODEL_GEMINI: z.enum(supportedGeminiModels),
+  LLM_MODEL_GEMINI_LITE: z.enum(supportedGeminiModels),
   LLM_API_KEY_GROQ: z.string().min(1),
   LLM_MODEL_GROQ: z.enum(supportedGroqModels)
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;
 export type SupportProviders = (typeof supportedProviders)[number];
+export type SupportedGeminiModels = (typeof supportedGeminiModels)[number];
+export type SupportedGroqModels = (typeof supportedGroqModels)[number];

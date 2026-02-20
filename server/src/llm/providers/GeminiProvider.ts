@@ -1,17 +1,16 @@
-import { config } from '@/config';
 import { Message } from '@/schemas/chatSchema';
 import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai';
-import { ILlmProvider } from '../ILlmProvider';
+import { ILlmProvider, LlmConfig } from '../ILlmProvider';
 import { PromptUtils } from '../PromptUtils';
 
 export default class GeminiProvider implements ILlmProvider {
   private model: GenerativeModel;
 
-  constructor() {
-    const genAi = new GoogleGenerativeAI(config.llm.apiKeyGemini as string);
+  constructor(llmConfig: LlmConfig) {
+    const genAi = new GoogleGenerativeAI(llmConfig.apiKey as string);
 
     this.model = genAi.getGenerativeModel({
-      model: config.llm.modelNameGemini,
+      model: llmConfig.modelName,
       systemInstruction: PromptUtils.buildSystemInstructions()
     });
   }

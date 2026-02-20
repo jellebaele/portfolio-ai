@@ -1,15 +1,16 @@
-import { config } from '@/config';
 import { Message } from '@/schemas/chatSchema';
 import Groq from 'groq-sdk';
 import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat.mjs';
-import { ILlmProvider } from '../ILlmProvider';
+import { ILlmProvider, LlmConfig } from '../ILlmProvider';
 import { PromptUtils } from '../PromptUtils';
 
 export class GroqProvider implements ILlmProvider {
   private client: Groq;
+  private llmConfig: LlmConfig;
 
-  constructor() {
-    this.client = new Groq({ apiKey: config.llm.apiKeyGroq });
+  constructor(llmConfig: LlmConfig) {
+    this.client = new Groq({ apiKey: llmConfig.apiKey });
+    this.llmConfig = llmConfig;
   }
 
   async generateContent(userPrompt: string, history: Message[], context: string): Promise<string> {
@@ -20,7 +21,7 @@ export class GroqProvider implements ILlmProvider {
     ];
 
     const chatCompletion = await this.client.chat.completions.create({
-      model: config.llm.modelnameGroq,
+      model: this.llmConfig.modelName,
       messages: messages,
       temperature: 0.2
     });
