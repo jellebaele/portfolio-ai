@@ -38,7 +38,11 @@ export default class ResumeService {
   }
 
   private getCacheKey(userPrompt: string, history: Message[]) {
-    const prompt = JSON.stringify({ content: userPrompt, history: history.join('\n') });
+    const prompt = JSON.stringify({
+      content: userPrompt,
+      history: history.map(h => `${h.role}:${h.content}`).join('\n')
+    });
+
     return crypto.createHash('md5').update(prompt).digest('hex');
   }
 
