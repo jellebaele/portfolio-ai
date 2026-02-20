@@ -101,6 +101,39 @@
   --sidebar-ring: 175 70% 50%;
 }
 
+.light {
+  --background: 0 0% 98%;
+  --foreground: 220 20% 14%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 20% 14%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 20% 14%;
+  --primary: 175 70% 38%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 14% 92%;
+  --secondary-foreground: 220 16% 30%;
+  --muted: 220 14% 95%;
+  --muted-foreground: 215 15% 46%;
+  --accent: 175 70% 38%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 72% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 14% 88%;
+  --input: 220 14% 88%;
+  --ring: 175 70% 38%;
+  --chat-user: 220 14% 94%;
+  --chat-ai: 0 0% 100%;
+  --glow: 175 70% 38%;
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 220 20% 14%;
+  --sidebar-primary: 175 70% 38%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 220 14% 92%;
+  --sidebar-accent-foreground: 220 16% 30%;
+  --sidebar-border: 220 14% 88%;
+  --sidebar-ring: 175 70% 38%;
+}
+
 @layer base {
   * {
     /* This will now work because --color-border is defined in @theme */
