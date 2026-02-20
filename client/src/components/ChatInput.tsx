@@ -1,13 +1,15 @@
 import { motion } from 'framer-motion';
-import { Send } from 'lucide-react';
+import { RotateCcw, Send } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type ChatInputProps = {
   onSend: (message: string) => void;
+  lastUserMessage: string;
   isLoading: boolean;
+  isError: boolean;
 };
-const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
+const ChatInput = ({ onSend, lastUserMessage, isLoading, isError }: ChatInputProps) => {
   const [input, setInput] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { t } = useTranslation();
@@ -20,7 +22,7 @@ const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
   }, [input]);
 
   const handleSubmit = () => {
-    const trimmed = input.trim();
+    const trimmed = isError ? lastUserMessage : input.trim();
     if (!trimmed || isLoading) return;
     onSend(trimmed);
     setInput('');
@@ -51,10 +53,14 @@ const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleSubmit}
-          disabled={!input.trim() || isLoading}
-          className='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:opacity-30'
+          disabled={(!input.trim() || isLoading) && !isError}
+          className='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:opacity-30 -translate-y-0.5'
         >
-          <Send className='h-4 w-4' />
+          {isError && !input.trim() ? (
+            <RotateCcw className='h-4 w-4' />
+          ) : (
+            <Send className='h-4 w-4' />
+          )}
         </motion.button>
       </div>
       <p className='mt-2 text-center text-xs text-muted-foreground'>{t('chatInput.footer')}</p>

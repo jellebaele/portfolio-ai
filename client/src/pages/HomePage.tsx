@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const HomePage = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const { mutate, isPending } = useSendChatMessage(aiMsg => {
+  const { mutate, isPending, isError } = useSendChatMessage(aiMsg => {
     setMessages(prev => [...prev, aiMsg]);
   });
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -60,7 +60,12 @@ const HomePage = () => {
         )}
       </div>
 
-      <ChatInput onSend={handleSend} isLoading={isPending} />
+      <ChatInput
+        onSend={handleSend}
+        lastUserMessage={messages[messages.length - 2]?.content ?? ''}
+        isLoading={isPending}
+        isError={isError}
+      />
     </div>
   );
 };
