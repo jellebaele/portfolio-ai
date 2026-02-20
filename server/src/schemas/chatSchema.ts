@@ -16,6 +16,10 @@ export interface ChatResponseDto {
   role: 'assistant';
   data: string;
   status: 'success' | 'fail';
+  meta: {
+    llmModel: string;
+    provider: string;
+  };
 }
 
 export type ChatRequestBody = z.infer<typeof ChatRequestSchema>['body'];

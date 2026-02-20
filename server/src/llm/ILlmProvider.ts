@@ -1,16 +1,18 @@
 import { Message } from '@/schemas/chatSchema';
-import {
-  SupportedGeminiModels,
-  SupportedGroqModels,
-  SupportProviders as SupportedProviders
-} from '@/schemas/envSchema';
+import { SupportedModels, SupportedProviders } from '@/schemas/envSchema';
 
 export interface ILlmProvider {
-  generateContent(userPrompt: string, history: Message[], context: string): Promise<string>;
+  generateContent(userPrompt: string, history: Message[], context: string): Promise<LlmResponse>;
 }
 
 export interface LlmConfig {
   type: SupportedProviders;
-  modelName: SupportedGeminiModels | SupportedGroqModels;
+  modelName: SupportedModels;
   apiKey: string;
+}
+
+export interface LlmResponse {
+  aiResponse: string;
+  provider: SupportedProviders;
+  modelName: SupportedModels;
 }

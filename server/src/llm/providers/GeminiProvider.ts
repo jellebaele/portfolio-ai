@@ -1,12 +1,14 @@
 import { Message } from '@/schemas/chatSchema';
 import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai';
-import { ILlmProvider, LlmConfig } from '../ILlmProvider';
+import { ILlmProvider, LlmConfig, LlmResponse } from '../ILlmProvider';
 import { PromptUtils } from '../PromptUtils';
 
 export default class GeminiProvider implements ILlmProvider {
   private model: GenerativeModel;
+  private llmConfig: LlmConfig;
 
   constructor(llmConfig: LlmConfig) {
+    this.llmConfig = llmConfig;
     const genAi = new GoogleGenerativeAI(llmConfig.apiKey as string);
 
     this.model = genAi.getGenerativeModel({
@@ -19,7 +21,7 @@ export default class GeminiProvider implements ILlmProvider {
     userPrompt: string,
     history: Message[],
     context: string
-  ): Promise<string> {
+  ): Promise<LlmResponse> {
     const prompt = PromptUtils.buildStrictPrompt(
       userPrompt,
       context,
@@ -27,6 +29,10 @@ export default class GeminiProvider implements ILlmProvider {
     );
 
     const aiContent = await this.model.generateContent(prompt);
-    return aiContent.response.text();
+    return {
+      aiResponse: aiContent.response.text(),
+      provider: this.llmConfig.type,
+      modelName: this.llmConfig.modelName
+    };
   }
 }

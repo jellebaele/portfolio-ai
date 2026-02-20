@@ -22,19 +22,20 @@ export default class ResumeService {
     if (!lastUserPrompt) throw new Error('No user message found');
 
     const cacheKey = this.getCacheKey(lastUserPrompt.content, trimmedHistory.slice(-3, -1));
-    const cached = await redis.get<string>(cacheKey);
-    if (cached) return this.formatMessage(cached);
+    const cached = await redis.get<ChatResponseDto>(cacheKey);
+    if (cached) return this.formatMessage(cached.data, cached.meta.llmModel, cached.meta.provider);
 
     const context = await this.getRelevantContext(lastUserPrompt.content);
-    const aiResponse = await this.llm.generateContent(
+    const { aiResponse, provider, modelName } = await this.llm.generateContent(
       lastUserPrompt.content,
       trimmedHistory.slice(0, trimmedHistory.length - 1),
       context
     );
 
-    await redis.set(cacheKey, aiResponse, { ex: CACHE_TTL });
+    const response = this.formatMessage(aiResponse, provider, modelName);
+    await redis.set<ChatResponseDto>(cacheKey, response, { ex: CACHE_TTL });
 
-    return this.formatMessage(aiResponse);
+    return response;
   }
 
   private getCacheKey(userPrompt: string, history: Message[]) {
@@ -55,12 +56,16 @@ export default class ResumeService {
     return queryResult.map(match => match.data).join('\n\n');
   }
 
-  private formatMessage(data: string): ChatResponseDto {
+  private formatMessage(data: string, modelName: string, provider: string): ChatResponseDto {
     return {
       id: uuidv4(),
       role: 'assistant',
       data: data,
-      status: 'success'
+      status: 'success',
+      meta: {
+        llmModel: modelName,
+        provider: provider
+      }
     };
   }
 }

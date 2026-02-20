@@ -1,7 +1,7 @@
 import { Message } from '@/schemas/chatSchema';
 import Groq from 'groq-sdk';
 import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat.mjs';
-import { ILlmProvider, LlmConfig } from '../ILlmProvider';
+import { ILlmProvider, LlmConfig, LlmResponse } from '../ILlmProvider';
 import { PromptUtils } from '../PromptUtils';
 
 export class GroqProvider implements ILlmProvider {
@@ -13,7 +13,11 @@ export class GroqProvider implements ILlmProvider {
     this.llmConfig = llmConfig;
   }
 
-  async generateContent(userPrompt: string, history: Message[], context: string): Promise<string> {
+  async generateContent(
+    userPrompt: string,
+    history: Message[],
+    context: string
+  ): Promise<LlmResponse> {
     const messages: ChatCompletionMessageParam[] = [
       { role: 'system', content: PromptUtils.buildSystemInstructions() },
       ...PromptUtils.mapHistory(history),
@@ -26,6 +30,10 @@ export class GroqProvider implements ILlmProvider {
       temperature: 0.2
     });
 
-    return chatCompletion.choices[0]?.message?.content || "I couldn't generate a response.";
+    return {
+      aiResponse: chatCompletion.choices[0]?.message?.content || "I couldn't generate a response.",
+      provider: this.llmConfig.type,
+      modelName: this.llmConfig.modelName
+    };
   }
 }

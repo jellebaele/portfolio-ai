@@ -24,6 +24,7 @@ export const envSchema = z.object({
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;
-export type SupportProviders = (typeof supportedProviders)[number];
+export type SupportedProviders = (typeof supportedProviders)[number];
 export type SupportedGeminiModels = (typeof supportedGeminiModels)[number];
 export type SupportedGroqModels = (typeof supportedGroqModels)[number];
+export type SupportedModels = SupportedGeminiModels | SupportedGroqModels;

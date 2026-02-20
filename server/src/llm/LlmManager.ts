@@ -1,5 +1,5 @@
 import { Message } from '@/schemas/chatSchema';
-import { ILlmProvider } from './ILlmProvider';
+import { ILlmProvider, LlmResponse } from './ILlmProvider';
 
 export default class LlmManager implements ILlmProvider {
   private providers: ILlmProvider[];
@@ -15,7 +15,7 @@ export default class LlmManager implements ILlmProvider {
     userPrompt: string,
     history: Message[],
     context: string
-  ): Promise<string> {
+  ): Promise<LlmResponse> {
     const totalAmountOfProviders = this.providers.length;
 
     for (let i = 0; i < totalAmountOfProviders; i++) {
