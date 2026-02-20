@@ -2,7 +2,6 @@ import { vectorIndex } from '@/database/vectorDatabase';
 import Vector from '@/models/vector';
 import fs from 'fs/promises';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 
 export default class IngestService {
   private dataPath = path.join(process.cwd(), 'data');
@@ -17,8 +16,8 @@ export default class IngestService {
       const content = await fs.readFile(path.join(this.dataPath, file), 'utf-8');
       const chunks = content.split('\n\n').filter(c => c.trim().length > 10);
 
-      const vectors: Vector[] = chunks.map(chunk => ({
-        id: uuidv4(),
+      const vectors: Vector[] = chunks.map((chunk, index) => ({
+        id: this.createChunkId(file, index),
         data: chunk,
         metadata: {
           fileName: file,
@@ -31,9 +30,13 @@ export default class IngestService {
     }
   }
 
+  private createChunkId(file: string, index: number): string {
+    return `${file}-${index}`;
+  }
+
   private async deleteOldEntries(file: string) {
-    const isDeleted = await vectorIndex.delete({ filter: `metadata.fileName = '${file}'` });
-    if (isDeleted) console.log(`Cleaned old index entries for: ${file}`);
+    const result = await vectorIndex.delete({ prefix: file });
+    if (result.deleted > 0) console.log(`Cleaned old index entries for: ${file}`);
     else console.warn(`Failed cleaning old index entries for: ${file}!`);
   }
 }
