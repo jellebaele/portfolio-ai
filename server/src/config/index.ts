@@ -16,6 +16,9 @@ export const config = {
   database: {
     upstashVectorUrl: process.env.UPSTASH_VECTOR_REST_URL,
     upstashVectorToken: process.env.UPSTASH_VECTOR_REST_TOKEN
+  },
+  llm: {
+    geminiApiKey: process.env.GEMINI_API_KEY
   }
 };
 

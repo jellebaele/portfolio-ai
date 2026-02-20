@@ -6,7 +6,7 @@ export class ChatController {
   async handleMessage(req: Request<object, object, ChatRequestBody>, res: Response) {
     const { messages } = req.body;
 
-    const response = resumeService.processChatMessage(messages);
+    const response = await resumeService.processChatMessage(messages);
 
     res.status(200).json({ status: 'success', data: response });
   }
