@@ -17,6 +17,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@types/uuid": "^10.0.0",
+    "@upstash/redis": "^1.36.2",
     "@upstash/vector": "^1.2.2",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",

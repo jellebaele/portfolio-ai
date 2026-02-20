@@ -1,9 +1,11 @@
 import { createApp } from './app';
 import { config } from './config';
-import { connectDB } from './database/database';
+import { connectRedis } from './database/redis';
+import { connectVectorDatabase } from './database/vectorDatabase';
 
 const startServer = async () => {
-  await connectDB();
+  await connectVectorDatabase();
+  await connectRedis();
   const app = createApp();
 
   app.listen(config.port, () => {

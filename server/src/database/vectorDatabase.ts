@@ -6,7 +6,7 @@ export const vectorIndex = new Index({
   token: config.database.upstashVectorToken
 });
 
-export const connectDB = async () => {
+export const connectVectorDatabase = async () => {
   try {
     await vectorIndex.info();
     console.log('Vector database connected succesfully');

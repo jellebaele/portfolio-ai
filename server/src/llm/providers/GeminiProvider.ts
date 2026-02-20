@@ -9,7 +9,7 @@ export default class GeminiProvider implements ILlmProvider {
     const genAi = new GoogleGenerativeAI(config.llm.apiKey as string);
 
     this.model = genAi.getGenerativeModel({
-      model: 'dd',
+      model: config.llm.primaryModel,
       systemInstruction: systemInstruction
     });
   }

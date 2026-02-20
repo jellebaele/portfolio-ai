@@ -1,8 +1,8 @@
-import { connectDB } from '@/database/database';
+import { connectVectorDatabase } from '@/database/vectorDatabase';
 import { ingestService } from '@/services';
 
 async function seed() {
-  await connectDB();
+  await connectVectorDatabase();
   await ingestService.ingestMarkdownFiles();
 }
 

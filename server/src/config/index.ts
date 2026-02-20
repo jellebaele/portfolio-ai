@@ -23,9 +23,15 @@ export const config = {
     upstashVectorUrl: env.UPSTASH_VECTOR_REST_URL,
     upstashVectorToken: env.UPSTASH_VECTOR_REST_TOKEN
   },
+  cache: {
+    redisUrl: env.UPSTASH_REDIS_REST_URL,
+    redisToken: env.UPSTASH_REDIS_REST_TOKEN
+  },
   llm: {
     apiKey: env.LLM_API_KEY,
-    provider: env.LLM_PROVIDER
+    provider: env.LLM_PROVIDER,
+    primaryModel: env.LLM_PRIMARY_MODEL,
+    fallbackModel: env.LLM_FALLBACK_MODEL
   }
 };
 

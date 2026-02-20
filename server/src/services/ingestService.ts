@@ -1,4 +1,4 @@
-import { vectorIndex } from '@/database/database';
+import { vectorIndex } from '@/database/vectorDatabase';
 import Vector from '@/models/vector';
 import fs from 'fs/promises';
 import path from 'path';
