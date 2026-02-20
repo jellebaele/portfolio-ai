@@ -9,14 +9,12 @@ if (!result.success) {
 
 const env = result.data;
 
-const FIFTEEN_MINUTES = 15 * 60 * 1000;
-
 export const config = {
-  port: env.PORT || 3000,
+  port: env.PORT,
   nodeEnv: env.NODE_ENV,
   ratelimit: {
-    windowMs: env.RATELIMIT_WINDOW_MS || FIFTEEN_MINUTES,
-    limit: env.RATELIMIT_LIMIT || 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+    windowMs: env.RATELIMIT_WINDOW_MS,
+    limit: env.RATELIMIT_LIMIT, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
     standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
     ipv6Subnet: 56 // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
