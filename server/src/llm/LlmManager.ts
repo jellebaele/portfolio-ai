@@ -1,3 +1,4 @@
+import { Message } from '@/schemas/chatSchema';
 import { ILlmProvider } from './ILlmProvider';
 
 export default class LlmManager implements ILlmProvider {
@@ -10,7 +11,11 @@ export default class LlmManager implements ILlmProvider {
     this.currentIndex = 0;
   }
 
-  public async generateContent(prompt: string): Promise<string> {
+  public async generateContent(
+    userPrompt: string,
+    history: Message[],
+    context: string
+  ): Promise<string> {
     const totalAmountOfProviders = this.providers.length;
 
     for (let i = 0; i < totalAmountOfProviders; i++) {
@@ -18,7 +23,7 @@ export default class LlmManager implements ILlmProvider {
       const provider = this.providers[attemptIndex];
 
       try {
-        const result = await provider.generateContent(prompt);
+        const result = await provider.generateContent(userPrompt, history, context);
         this.currentIndex = attemptIndex;
         return result;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

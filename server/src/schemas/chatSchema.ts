@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const MessageSchema = z.object({
-  role: z.enum(['user', 'assistant']),
+  role: z.enum(['user', 'assistant', 'system']),
   content: z.string().min(1)
 });
 

@@ -1,3 +1,5 @@
+import { Message } from '@/schemas/chatSchema';
+
 export interface ILlmProvider {
-  generateContent(prompt: string): Promise<string>;
+  generateContent(userPrompt: string, history: Message[], context: string): Promise<string>;
 }

@@ -21,27 +21,24 @@ export default class ResumeService {
 
     if (!lastUserPrompt) throw new Error('No user message found');
 
-    const cacheKey = this.getCacheKey(
-      lastUserPrompt.content,
-      this.formatChatHistory(trimmedHistory.slice(-3, -1))
-    );
+    const cacheKey = this.getCacheKey(lastUserPrompt.content, trimmedHistory.slice(-3, -1));
     const cached = await redis.get<string>(cacheKey);
     if (cached) return this.formatMessage(cached);
 
     const context = await this.getRelevantContext(lastUserPrompt.content);
-
-    // AI models are bad at parsing javascript objects, make string:
-    const chatHistory = this.formatChatHistory(trimmedHistory.slice(0, trimmedHistory.length - 1));
-    const prompt = this.buildPrompt(chatHistory, context, lastUserPrompt.content);
-    const aiResponse = await this.llm.generateContent(prompt);
+    const aiResponse = await this.llm.generateContent(
+      lastUserPrompt.content,
+      trimmedHistory.slice(0, trimmedHistory.length - 1),
+      context
+    );
 
     await redis.set(cacheKey, aiResponse, { ex: CACHE_TTL });
 
     return this.formatMessage(aiResponse);
   }
 
-  private getCacheKey(data: string, history: string) {
-    const prompt = JSON.stringify({ content: data, history: history });
+  private getCacheKey(userPrompt: string, history: Message[]) {
+    const prompt = JSON.stringify({ content: userPrompt, history: history.join('\n') });
     return crypto.createHash('md5').update(prompt).digest('hex');
   }
 
@@ -61,29 +58,5 @@ export default class ResumeService {
       data: data,
       status: 'success'
     };
-  }
-
-  private formatChatHistory(history: Message[]) {
-    return history
-      .map(m => `${m.role === 'user' ? 'Question' : 'Answer'}: ${m.content}`)
-      .join('\n');
-  }
-
-  private buildPrompt(chatHistory: string, context: string, question: string) {
-    return `
-      You are Jelle's professional AI assistant.
-
-      CONVERSATION LOG:
-      ${chatHistory}
-
-      RELEVANT RESUME CONTEXT:
-      ${context}
-
-      INSTRUCTION:
-      Answer the user's "Current Question" based on the Resume Context and the conversation history above.
-      If the answer isn't in the context, say you don't know.
-
-      CURRENT QUESTION: ${question}
-    `;
   }
 }
