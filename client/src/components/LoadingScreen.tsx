@@ -1,6 +1,13 @@
 import { motion } from 'motion/react';
+import { useEffect } from 'react';
 
 const LoadingScreen = () => {
+  // LoadingScreen is rendered outside ThemeProvider
+  useEffect(() => {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'light') document.documentElement.classList.add('light');
+  }, []);
+
   return (
     <div className='flex h-screen w-full flex-col items-center justify-center bg-background'>
       <div className='relative flex items-center justify-center'>
