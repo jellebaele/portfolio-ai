@@ -44,7 +44,7 @@ const HomePage = () => {
 
   return (
     <div className='flex h-screen flex-col bg-background'>
-      <ChatHeader />
+      <ChatHeader isSystemError={isError} />
       <div ref={scrollRef} className='flex flex-1 flex-col overflow-y-auto'>
         {!hasMessages ? (
           <WelcomeScreen onSuggestionClick={handleSend} />
