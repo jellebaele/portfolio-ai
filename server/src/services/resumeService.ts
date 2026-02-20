@@ -17,6 +17,12 @@ export default class ResumeService {
 
     const userMessages = trimmedHistory.filter(m => m.role === 'user');
     const lastUserMessage = userMessages[userMessages.length - 1].content;
+    const previousMessages = trimmedHistory.slice(0, trimmedHistory.length - 1);
+
+    // AI models are bad at parsing javascript objects, make string:
+    const chatHistoryString = previousMessages
+      .map(m => `${m.role.toUpperCase()}: ${m.content}`)
+      .join('\n');
 
     const queryResult = await vectorIndex.query({
       data: lastUserMessage,
@@ -27,13 +33,19 @@ export default class ResumeService {
     const context = queryResult.map(match => match.data).join('\n\n');
 
     const prompt = `
-      Context from Jelle's resume and profile:
+      You are Jelle's professional AI assistant.
+
+      CONVERSATION LOG:
+      ${chatHistoryString}
+
+      RELEVANT RESUME CONTEXT:
       ${context}
 
-      Based on the context above, answer the user's question. 
-      If the information isn't in the context, say you don't know rather than making it up.
+      INSTRUCTION:
+      Answer the user's "Current Question" based on the Resume Context and the conversation history above.
+      If the answer isn't in the context, say you don't know.
 
-      User Question: ${lastUserMessage}
+      CURRENT QUESTION: ${lastUserMessage}
     `;
 
     const result = await model.generateContent(prompt);
