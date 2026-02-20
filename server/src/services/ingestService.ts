@@ -21,7 +21,7 @@ export default class IngestService {
         data: chunk,
         metadata: {
           fileName: file,
-          text: chunk // Twice for human readability
+          text: chunk // Twice for human readability, 'data' gets converted in vectors
         }
       }));
 
