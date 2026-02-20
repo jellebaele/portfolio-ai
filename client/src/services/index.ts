@@ -1,3 +1,3 @@
-import ChatService from './chatService';
+import ChatService from './ChatService';
 
 export const chatService = new ChatService();
