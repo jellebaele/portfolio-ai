@@ -1,7 +1,8 @@
 import { config } from '@/config';
 import { vectorIndex } from '@/database/database';
-import { Message } from '@/schemas/chatSchema';
+import { ChatResponseDto, Message } from '@/schemas/chatSchema';
 import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai';
+import { v4 as uuidv4 } from 'uuid';
 
 const MAX_HISTORY = 12;
 const genAi = new GoogleGenerativeAI(config.llm.geminiApiKey as string);
@@ -12,7 +13,7 @@ const model: GenerativeModel = genAi.getGenerativeModel({
 });
 
 export default class ResumeService {
-  async processChatMessage(messages: Message[]): Promise<string> {
+  async processChatMessage(messages: Message[]): Promise<ChatResponseDto> {
     const trimmedHistory = messages.slice(-MAX_HISTORY);
 
     const userMessages = trimmedHistory.filter(m => m.role === 'user');
@@ -50,6 +51,11 @@ export default class ResumeService {
 
     const result = await model.generateContent(prompt);
 
-    return result.response.text();
+    return {
+      id: uuidv4(),
+      role: 'assistant',
+      data: result.response.text(),
+      status: 'success'
+    };
   }
 }

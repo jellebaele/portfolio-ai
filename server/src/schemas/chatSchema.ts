@@ -11,5 +11,12 @@ export const ChatRequestSchema = z.object({
   })
 });
 
+export interface ChatResponseDto {
+  id: string;
+  role: 'assistant';
+  data: string;
+  status: 'success' | 'fail';
+}
+
 export type ChatRequestBody = z.infer<typeof ChatRequestSchema>['body'];
 export type Message = z.infer<typeof MessageSchema>;
