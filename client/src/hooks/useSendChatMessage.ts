@@ -2,7 +2,7 @@ import type ChatMessage from '@/models/chatMessage';
 import { chatService } from '@/services';
 import { useMutation } from '@tanstack/react-query';
 
-export const useSendChatMessage = (onSuccessCallback?: (aiMessage: ChatMessage) => void) => {
+export const useSendChatMessage = (onResponseCallback?: (aiMessage: ChatMessage) => void) => {
   return useMutation({
     mutationFn: (messages: ChatMessage[]) => chatService.sendChatMessage(messages),
 
@@ -12,9 +12,19 @@ export const useSendChatMessage = (onSuccessCallback?: (aiMessage: ChatMessage) 
         role: response.role,
         content: response.data
       };
-      if (onSuccessCallback) onSuccessCallback(aiMsg);
+      if (onResponseCallback) onResponseCallback(aiMsg);
     },
 
-    onError: error => console.error('Chat mutation error:', error)
+    onError: error => {
+      console.error('Chat mutation error:', error);
+      const errorMsg: ChatMessage = {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content:
+          " I'm sorry, I'm having trouble connecting to my brain right now. Please try again later."
+      };
+
+      if (onResponseCallback) onResponseCallback(errorMsg);
+    }
   });
 };
