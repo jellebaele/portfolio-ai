@@ -11,7 +11,6 @@ import { useEffect, useRef, useState } from 'react';
 const HomePage = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const { mutate, isPending } = useSendChatMessage(aiMsg => {
-    console.log(aiMsg);
     setMessages(prev => [...prev, aiMsg]);
   });
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -37,7 +36,6 @@ const HomePage = () => {
     };
     const updatedHistory = [...messages, userMsg];
     setMessages(updatedHistory);
-    console.log(updatedHistory);
 
     mutate(updatedHistory);
   };
