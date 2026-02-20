@@ -28,10 +28,10 @@ export const config = {
     redisToken: env.UPSTASH_REDIS_REST_TOKEN
   },
   llm: {
-    apiKey: env.LLM_API_KEY,
-    provider: env.LLM_PROVIDER,
-    primaryModel: env.LLM_PRIMARY_MODEL,
-    fallbackModel: env.LLM_FALLBACK_MODEL
+    apiKeyGemini: env.LLM_API_KEY_GEMINI,
+    modelNameGemini: env.LLM_MODEL_GEMINI,
+    apiKeyGroq: env.LLM_API_KEY_GROQ,
+    modelnameGroq: env.LLM_MODEL_GROQ
   }
 };
 

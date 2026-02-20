@@ -26,8 +26,8 @@ export default class LlmManager implements ILlmProvider {
         const result = await provider.generateContent(userPrompt, history, context);
         this.currentIndex = attemptIndex;
         return result;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
+        console.error(error);
         console.warn(`Provider at index ${attemptIndex} failed. Trying next...`);
       }
     }
