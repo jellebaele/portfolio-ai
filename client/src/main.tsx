@@ -6,14 +6,20 @@ import { LanguageProvider } from './context/LuanguageContext.tsx';
 import { ThemeProvider } from './context/ThemeContext.tsx';
 import './index.css';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Suspense fallback={<LoadingScreen />}>
-      <ThemeProvider>
-        <LanguageProvider>
-          <App />
-        </LanguageProvider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <LanguageProvider>
+            <App />
+          </LanguageProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </Suspense>
   </StrictMode>
 );

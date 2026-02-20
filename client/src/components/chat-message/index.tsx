@@ -1,13 +1,13 @@
+import type ChatMessage from '@/models/chatMessage';
 import { motion } from 'motion/react';
 import ReactMarkdown from 'react-markdown';
-import type { Message } from '../ChatInput';
 import MessageAvatar from './MessageAvatar';
 
 type ChatMessageProps = {
-  message: Message;
+  message: ChatMessage;
 };
 
-const ChatMessage = ({ message }: ChatMessageProps) => {
+const ChatMessageItem = ({ message }: ChatMessageProps) => {
   const isUser = message.role === 'user';
 
   return (
@@ -38,4 +38,4 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
   );
 };
 
-export default ChatMessage;
+export default ChatMessageItem;

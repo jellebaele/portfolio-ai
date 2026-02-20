@@ -1,20 +1,19 @@
-import ChatMessage from '@/components/chat-message';
+import ChatMessageItem from '@/components/chat-message';
 import ChatHeader from '@/components/ChatHeader';
-import type { Message } from '@/components/ChatInput';
 import ChatInput from '@/components/ChatInput';
 import TypingIndicator from '@/components/TypingIndicator';
 import WelcomeScreen from '@/components/welcome-screen';
+import { useSendChatMessage } from '@/hooks/useSendChatMessage';
+import type ChatMessage from '@/models/chatMessage';
 import { AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
-const getMockResponse = async (question: string): Promise<string> => {
-  await new Promise(r => setTimeout(r, 1200 + Math.random() * 800));
-  return `Thanks for asking! This is a placeholder response. Connect your own LLM backend to provide real answers about your experience, skills, and projects.\n\nYou asked: "${question}"\n\nTo set this up, replace the \`getMockResponse\` function in \`src/pages/Index.tsx\` with your actual API call.`;
-};
-
 const HomePage = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const { mutate, isPending } = useSendChatMessage(aiMsg => {
+    console.log(aiMsg);
+    setMessages(prev => [...prev, aiMsg]);
+  });
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -28,30 +27,19 @@ const HomePage = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isLoading]);
+  }, [messages, isPending]);
 
   const handleSend = async (content: string) => {
-    const userMsg: Message = {
+    const userMsg: ChatMessage = {
       id: crypto.randomUUID(),
       role: 'user',
       content
     };
-    setMessages(prev => [...prev, userMsg]);
-    setIsLoading(true);
+    const updatedHistory = [...messages, userMsg];
+    setMessages(updatedHistory);
+    console.log(updatedHistory);
 
-    try {
-      const response = await getMockResponse(content);
-      const aiMsg: Message = {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        content: response
-      };
-      setMessages(prev => [...prev, aiMsg]);
-    } catch (err) {
-      console.error('Failed to get response:', err);
-    } finally {
-      setIsLoading(false);
-    }
+    mutate(updatedHistory);
   };
 
   const hasMessages = messages.length > 0;
@@ -66,15 +54,15 @@ const HomePage = () => {
           <div className='flex flex-col py-4'>
             <AnimatePresence>
               {messages.map(msg => (
-                <ChatMessage key={msg.id} message={msg} />
+                <ChatMessageItem key={msg.id} message={msg} />
               ))}
             </AnimatePresence>
-            {isLoading && <TypingIndicator />}
+            {isPending && <TypingIndicator />}
           </div>
         )}
       </div>
 
-      <ChatInput onSend={handleSend} isLoading={isLoading} />
+      <ChatInput onSend={handleSend} isLoading={isPending} />
     </div>
   );
 };

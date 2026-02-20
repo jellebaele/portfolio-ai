@@ -3,12 +3,6 @@ import { Send } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export type Message = {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-};
-
 type ChatInputProps = {
   onSend: (message: string) => void;
   isLoading: boolean;
@@ -34,6 +28,7 @@ const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
       textareaRef.current.style.height = 'auto';
     }
   };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
