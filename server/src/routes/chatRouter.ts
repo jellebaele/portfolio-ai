@@ -1,7 +1,7 @@
 import { catchAsync } from '@/middleware/errorHandler';
 import { validate } from '@/middleware/validateHandler';
 import { Router } from 'express';
-import { ChatController } from '../controllers/chatController';
+import { ChatController } from '../controllers/ChatController';
 import { ChatRequestSchema } from '../schemas/chatSchema';
 
 const router = Router();

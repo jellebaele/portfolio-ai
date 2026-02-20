@@ -1,10 +1,9 @@
 import { connectDB } from '@/database/database';
-import IngestService from '@/services/ingestService';
+import { ingestService } from '@/services';
 
 async function seed() {
   await connectDB();
-  const service = new IngestService();
-  await service.ingestMarkdownFiles();
+  await ingestService.ingestMarkdownFiles();
 }
 
 seed();
