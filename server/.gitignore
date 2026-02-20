@@ -67,3 +67,6 @@ package-lock.json
 *v8.log
 /lib/
 .env
+
+/data/*
+!/data/example.md
