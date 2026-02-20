@@ -1,18 +1,17 @@
-import { config } from '@/config';
 import { vectorIndex } from '@/database/database';
+import { ILlmProvider } from '@/llm/ILlmProvder';
 import { ChatResponseDto, Message } from '@/schemas/chatSchema';
-import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai';
 import { v4 as uuidv4 } from 'uuid';
 
 const MAX_HISTORY = 12;
-const genAi = new GoogleGenerativeAI(config.llm.geminiApiKey as string);
-const model: GenerativeModel = genAi.getGenerativeModel({
-  model: 'gemini-2.5-flash',
-  systemInstruction:
-    "You are Jelle's AI assistant. Use the provided context to answer questions about his career. Be professional but approachable."
-});
 
 export default class ResumeService {
+  private llm: ILlmProvider;
+
+  constructor(llm: ILlmProvider) {
+    this.llm = llm;
+  }
+
   async processChatMessage(messages: Message[]): Promise<ChatResponseDto> {
     const trimmedHistory = messages.slice(-MAX_HISTORY);
 
@@ -49,12 +48,12 @@ export default class ResumeService {
       CURRENT QUESTION: ${lastUserMessage}
     `;
 
-    const result = await model.generateContent(prompt);
+    const result = await this.llm.generateContent(prompt);
 
     return {
       id: uuidv4(),
       role: 'assistant',
-      data: result.response.text(),
+      data: result,
       status: 'success'
     };
   }
