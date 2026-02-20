@@ -21,15 +21,17 @@ export default class ResumeService {
 
     if (!lastUserPrompt) throw new Error('No user message found');
 
-    // AI models are bad at parsing javascript objects, make string:
-    const chatHistory = this.formatChatHistory(trimmedHistory.slice(0, trimmedHistory.length - 1));
-    const cacheKey = this.getCacheKey(lastUserPrompt.content, chatHistory);
-
+    const cacheKey = this.getCacheKey(
+      lastUserPrompt.content,
+      this.formatChatHistory(trimmedHistory.slice(-3, -1))
+    );
     const cached = await redis.get<string>(cacheKey);
     if (cached) return this.formatMessage(cached);
 
     const context = await this.getRelevantContext(lastUserPrompt.content);
 
+    // AI models are bad at parsing javascript objects, make string:
+    const chatHistory = this.formatChatHistory(trimmedHistory.slice(0, trimmedHistory.length - 1));
     const prompt = this.buildPrompt(chatHistory, context, lastUserPrompt.content);
     const aiResponse = await this.llm.generateContent(prompt);
 
