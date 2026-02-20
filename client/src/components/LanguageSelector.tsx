@@ -50,7 +50,7 @@ const LanguageSelector = () => {
             {supportedLanguages.map(language => (
               <button
                 key={language.code}
-                className={`flex w-full items-center px-3 py-2 text-xs transition-colors hover:bg-accent ${
+                className={`flex w-full items-center px-3 py-2 text-xs transition-colors hover:bg-secondary ${
                   language.code === language.code ? 'text-primary font-medium' : 'text-foreground'
                 }`}
                 onClick={() => handleLanguageChange(language)}
