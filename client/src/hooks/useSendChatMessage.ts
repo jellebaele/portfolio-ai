@@ -12,7 +12,11 @@ export const useSendChatMessage = (onResponseCallback?: (aiMessage: ChatMessage)
       const aiMsg: ChatMessage = {
         id: response.id,
         role: response.role,
-        content: response.data
+        content: response.data,
+        meta: {
+          llmModel: response.meta.llmModel,
+          provider: response.meta.provider
+        }
       };
       if (onResponseCallback) onResponseCallback(aiMsg);
     },

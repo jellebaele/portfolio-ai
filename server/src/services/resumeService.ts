@@ -32,7 +32,7 @@ export default class ResumeService {
       context
     );
 
-    const response = this.formatMessage(aiResponse, provider, modelName);
+    const response = this.formatMessage(aiResponse, modelName, provider);
     await redis.set<ChatResponseDto>(cacheKey, response, { ex: CACHE_TTL });
 
     return response;

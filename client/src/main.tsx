@@ -7,10 +7,11 @@ import { ThemeProvider } from './context/ThemeContext.tsx';
 import './index.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ChatProvider } from './context/ChatContext.tsx';
 import { ComposeProviders } from './utils/ComposeProviders.tsx';
 
 const queryClient = new QueryClient();
-const providers = [ThemeProvider, LanguageProvider];
+const providers = [ThemeProvider, LanguageProvider, ChatProvider];
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

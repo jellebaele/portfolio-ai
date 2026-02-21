@@ -3,6 +3,7 @@ import ChatHeader from '@/components/ChatHeader';
 import ChatInput from '@/components/ChatInput';
 import TypingIndicator from '@/components/TypingIndicator';
 import WelcomeScreen from '@/components/welcome-screen';
+import { useChat } from '@/context/ChatContext';
 import { useSendChatMessage } from '@/hooks/useSendChatMessage';
 import type ChatMessage from '@/models/chatMessage';
 import { AnimatePresence } from 'motion/react';
@@ -10,9 +11,12 @@ import { useEffect, useRef, useState } from 'react';
 
 const HomePage = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const { setModel } = useChat();
   const { mutate, isPending, isError } = useSendChatMessage(aiMsg => {
     setMessages(prev => [...prev, aiMsg]);
+    setModel(aiMsg.meta?.llmModel || 'No model');
   });
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {

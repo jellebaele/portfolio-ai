@@ -4,4 +4,8 @@ export default interface ChatMessage {
   id: string;
   role: Role;
   content: string;
+  meta?: {
+    llmModel: string;
+    provider: string;
+  };
 }
