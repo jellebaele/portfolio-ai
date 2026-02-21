@@ -3,6 +3,7 @@ import { SupportedModels, SupportedProviders } from '@/schemas/envSchema';
 
 export interface ILlmProvider {
   generateContent(userPrompt: string, history: Message[], context: string): Promise<LlmResponse>;
+  getLlmModel(): string;
 }
 
 export interface LlmConfig {

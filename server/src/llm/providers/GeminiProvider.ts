@@ -35,4 +35,8 @@ export default class GeminiProvider implements ILlmProvider {
       modelName: this.llmConfig.modelName
     };
   }
+
+  public getLlmModel(): string {
+    return this.llmConfig.modelName;
+  }
 }

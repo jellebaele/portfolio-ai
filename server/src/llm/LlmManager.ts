@@ -34,4 +34,9 @@ export default class LlmManager implements ILlmProvider {
 
     throw new Error('All LLM providers are currently exhausted.');
   }
+
+  public getLlmModel(): string {
+    const activeProvider = this.providers[this.currentIndex];
+    return activeProvider.getLlmModel();
+  }
 }

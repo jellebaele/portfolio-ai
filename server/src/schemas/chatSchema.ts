@@ -22,5 +22,10 @@ export interface ChatResponseDto {
   };
 }
 
+export interface GetModelResponseDto {
+  status: 'success' | 'fail';
+  llmModel: string;
+}
+
 export type ChatRequestBody = z.infer<typeof ChatRequestSchema>['body'];
 export type Message = z.infer<typeof MessageSchema>;

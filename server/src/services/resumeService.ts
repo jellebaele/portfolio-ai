@@ -1,7 +1,8 @@
 import { redis } from '@/database/redis';
 import { vectorIndex } from '@/database/vectorDatabase';
+import { llmProvider } from '@/llm';
 import { ILlmProvider } from '@/llm/ILlmProvider';
-import { ChatResponseDto, Message } from '@/schemas/chatSchema';
+import { ChatResponseDto, GetModelResponseDto, Message } from '@/schemas/chatSchema';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -15,7 +16,7 @@ export default class ResumeService {
     this.llm = llm;
   }
 
-  async processChatMessage(messages: Message[]): Promise<ChatResponseDto> {
+  public async processChatMessage(messages: Message[]): Promise<ChatResponseDto> {
     const trimmedHistory = messages.slice(-MAX_HISTORY);
     const lastUserPrompt = trimmedHistory.filter(m => m.role === 'user').at(-1);
 
@@ -38,6 +39,13 @@ export default class ResumeService {
     return response;
   }
 
+  public getActiveModel(): GetModelResponseDto {
+    return {
+      status: 'success',
+      llmModel: llmProvider.getLlmModel()
+    };
+  }
+
   private getCacheKey(userPrompt: string, history: Message[]) {
     const prompt = JSON.stringify({
       content: userPrompt,
@@ -47,6 +55,7 @@ export default class ResumeService {
     return crypto.createHash('md5').update(prompt).digest('hex');
   }
 
+  // TODO move to appropriate class
   private async getRelevantContext(query: string): Promise<string> {
     const queryResult = await vectorIndex.query({
       data: query,
