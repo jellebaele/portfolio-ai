@@ -1,3 +1,4 @@
+import { useGetActiveModel } from '@/hooks/useGetActiveModel';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 interface ChatContextType {
@@ -12,11 +13,11 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [model, setModel] = useState<string>('Initializing...');
   const [isSystemError, setIsSystemError] = useState<boolean>(false);
+  const { data } = useGetActiveModel();
 
   useEffect(() => {
-    // Fetch model
-    setModel('gemini');
-  }, []);
+    if (data?.llmModel) setModel(data.llmModel);
+  }, [data]);
 
   return (
     <ChatContext.Provider value={{ model, setModel, isSystemError, setIsSystemError }}>

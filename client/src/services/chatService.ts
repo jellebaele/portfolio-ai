@@ -1,4 +1,4 @@
-import type { ChatResponseDto } from '@/models/chatDto';
+import type { ChatResponseDto, GetActiveModelResponseDto } from '@/models/chatDto';
 import type ChatMessage from '@/models/chatMessage';
 
 export default class ChatService {
@@ -13,6 +13,22 @@ export default class ChatService {
 
     if (!response.ok) {
       throw new Error('Failed to fetch AI response');
+    }
+
+    const result = await response.json();
+    return result;
+  }
+
+  public async getActiveModel(): Promise<GetActiveModelResponseDto> {
+    const response = await fetch('http://localhost:5000/api/v1/chat/current-model', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch response');
     }
 
     const result = await response.json();

@@ -1,5 +1,6 @@
 import { useChat } from '@/context/ChatContext';
 import { Cpu, Terminal } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import LanguageSelector from './LanguageSelector';
 import ThemeSelector from './ThemeSelector';
 import { Badge } from './ui/badge';
@@ -26,7 +27,19 @@ const ChatHeader = ({ isSystemError }: ChatHeaderProps) => {
           className='gap-1.5 text-xs font-normal text-muted-foreground py-2 px-3 ml-2'
         >
           <Cpu className='h-3 w-3' />
-          {model}
+          <div className='relative flex items-center'>
+            <AnimatePresence mode='wait'>
+              <motion.span
+                key={model}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+              >
+                {model}
+              </motion.span>
+            </AnimatePresence>
+          </div>
         </Badge>
       </div>
       <div className='flex items-center gap-3'>

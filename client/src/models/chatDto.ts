@@ -10,3 +10,8 @@ export interface ChatResponseDto {
     provider: string;
   };
 }
+
+export interface GetActiveModelResponseDto {
+  status: 'success' | 'error';
+  llmModel: string;
+}
