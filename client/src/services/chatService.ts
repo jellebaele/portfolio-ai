@@ -1,37 +1,34 @@
 import type { ChatResponseDto, GetActiveModelResponseDto } from '@/models/chatDto';
 import type ChatMessage from '@/models/chatMessage';
+import axios, { type AxiosInstance } from 'axios';
 
 export default class ChatService {
-  public async sendChatMessage(messages: ChatMessage[]): Promise<ChatResponseDto> {
-    const response = await fetch('http://localhost:5000/api/v1/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ messages })
-    });
+  private httpClient: AxiosInstance;
 
-    if (!response.ok) {
+  constructor() {
+    this.httpClient = axios.create({
+      baseURL: import.meta.env.VITE_BASE_URL_CHAT_API,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  public async sendChatMessage(messages: ChatMessage[]): Promise<ChatResponseDto> {
+    const response = await this.httpClient.post<ChatResponseDto>('/api/v1/chat', { messages });
+
+    if (response.status !== 200) {
       throw new Error('Failed to fetch AI response');
     }
 
-    const result = await response.json();
-    return result;
+    return response.data;
   }
 
   public async getActiveModel(): Promise<GetActiveModelResponseDto> {
-    const response = await fetch('http://localhost:5000/api/v1/chat/current-model', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await this.httpClient.get('/api/v1/chat/current-model');
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error('Failed to fetch response');
     }
 
-    const result = await response.json();
-    return result;
+    return response.data;
   }
 }
