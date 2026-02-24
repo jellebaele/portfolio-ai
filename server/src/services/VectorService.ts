@@ -2,6 +2,8 @@ import { vectorIndex } from '@/database/vectorDatabase';
 import { Message } from '@/schemas/chatSchema';
 
 export default class VectorService {
+  private readonly SIMILARITY_THRESHOLD = 0.75;
+
   public async getRelevantContext(
     lastUserPrompt: string,
     historyBeforeLast: Message[]
@@ -11,14 +13,24 @@ export default class VectorService {
     const queryResult = await vectorIndex.query({
       data: query,
       topK: 5,
-      includeData: true
+      includeData: true,
+      includeVectors: false
     });
+
+    const filteredResults = queryResult.filter(
+      match => (match.score ?? 0) >= this.SIMILARITY_THRESHOLD
+    );
+
+    if (filteredResults.length === 0) {
+      return '';
+    }
+
     return queryResult.map(match => match.data).join('\n\n');
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private createSearchQuery(lastUserPrompt: string, historyBeforeLast: Message[]): string {
-    const searchQuery = lastUserPrompt;
+    const lastUserMessage = historyBeforeLast.filter(m => m.role === 'user').at(-1)?.content || '';
+    const combinedQuery = `${lastUserMessage} ${lastUserPrompt}`.trim();
 
     // OPTION TO LOOK INTO:
     // if (historyBeforeLast.length > 0) {
@@ -32,6 +44,6 @@ export default class VectorService {
     //   searchQuery = rewriteResponse.aiResponse;
     // }
 
-    return searchQuery;
+    return combinedQuery;
   }
 }
