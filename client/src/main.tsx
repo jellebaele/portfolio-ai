@@ -8,7 +8,7 @@ import './index.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ChatProvider } from './context/ChatContext.tsx';
-import { ComposeProviders } from './utils/ComposeProviders.tsx';
+import { ComposeProviders } from './utils/composeProviders.tsx';
 
 const queryClient = new QueryClient();
 const providers = [ThemeProvider, LanguageProvider, ChatProvider];
