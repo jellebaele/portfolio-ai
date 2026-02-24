@@ -40,6 +40,25 @@ export class PromptUtils {
     `.trim();
   }
 
+  static buildStandaloneQueryPrompt(userPrompt: string, history: Message[]): string {
+    const historyString = this.mapHistoryToString(history);
+
+    return `
+    Given the following conversation history and a follow-up question, 
+    rephrase the follow-up question to be a standalone search query.
+    
+    - Do NOT answer the question.
+    - If the follow-up is already a standalone question, return it as is.
+    - Focus on technical keywords and the subject of the conversation.
+
+    HISTORY:
+    ${historyString}
+    
+    FOLLOW-UP: ${userPrompt}
+    
+    STANDALONE QUERY:`.trim();
+  }
+
   static mapHistory(history: Message[]) {
     return history.map(m => ({
       role: m.role === 'user' ? ('user' as const) : ('assistant' as const),

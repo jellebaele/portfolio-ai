@@ -18,17 +18,18 @@ export default class ResumeService {
 
   public async processChatMessage(messages: Message[]): Promise<ChatResponseDto> {
     const trimmedHistory = messages.slice(-MAX_HISTORY);
-    const lastUserPrompt = trimmedHistory.filter(m => m.role === 'user').at(-1);
+    const lastUserPrompt = trimmedHistory.filter(m => m.role === 'user').at(-1)?.content || '';
+    const historyBeforeLast = trimmedHistory.slice(0, -1);
 
-    if (!lastUserPrompt) throw new Error('No user message found');
-
-    const cacheKey = this.getCacheKey(lastUserPrompt.content, trimmedHistory.slice(-3, -1));
+    const cacheKey = this.getCacheKey(lastUserPrompt, trimmedHistory.slice(-3, -1));
     const cached = await redis.get<ChatResponseDto>(cacheKey);
     if (cached) return this.formatMessage(cached.data, cached.meta.llmModel, cached.meta.provider);
 
-    const context = await this.getRelevantContext(lastUserPrompt.content);
+    const context = await this.getRelevantContext(
+      this.createSearchQuery(lastUserPrompt, historyBeforeLast)
+    );
     const { aiResponse, provider, modelName } = await this.llm.generateContent(
-      lastUserPrompt.content,
+      lastUserPrompt,
       trimmedHistory.slice(0, trimmedHistory.length - 1),
       context
     );
@@ -76,5 +77,24 @@ export default class ResumeService {
         provider: provider
       }
     };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private createSearchQuery(lastUserPrompt: string, historyBeforeLast: Message[]): string {
+    const searchQuery = lastUserPrompt;
+
+    // OPTION TO LOOK INTO:
+    // if (historyBeforeLast.length > 0) {
+    //   const rewritePrompt = PromptUtils.buildStandaloneQueryPrompt(
+    //     lastUserPrompt,
+    //     historyBeforeLast
+    //   );
+
+    //   // We call the LLM once just to get the search terms
+    //   const rewriteResponse = await this.llm.generateContent(rewritePrompt, [], '');
+    //   searchQuery = rewriteResponse.aiResponse;
+    // }
+
+    return searchQuery;
   }
 }
