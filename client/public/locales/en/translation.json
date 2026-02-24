@@ -5,7 +5,7 @@
     }
   },
   "chatInput": {
-    "placeholder": "Ask my anything...",
+    "placeholder": "Ask me anything...",
     "footer": "AI-powered responses about my experience, skills, and projects."
   },
   "welcomeScreen": {
@@ -16,19 +16,19 @@
     "suggestions": {
       "technical": {
         "label": "Technical Skills",
-        "question": "What programming languages and technologies do you work with?"
+        "question": "What programming languages and technologies does Jelle work with?"
       },
       "experience": {
         "label": "Experience",
-        "question": "Tell me about your most impactful project and your role in it."
+        "question": "Can you tell me about Jelle's most impactful projects?"
       },
       "background": {
         "label": "Background",
-        "question": "What is your educational background and how did you get into development?"
+        "question": "What is Jelle's background and how did he start in development?"
       },
       "hireMe": {
-        "label": "Why Hire Me",
-        "question": "What makes you stand out as a developer and teammate?"
+        "label": "Why Hire Jelle",
+        "question": "What makes Jelle stand out as a developer and teammate?"
       }
     }
   }

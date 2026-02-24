@@ -16,19 +16,19 @@
     "suggestions": {
       "technical": {
         "label": "Technische Vaardigheden",
-        "question": "Met welke programmeertalen en technologieën werk je?"
+        "question": "Met welke programmeertalen en technologieën werkt Jelle?"
       },
       "experience": {
         "label": "Ervaring",
-        "question": "Vertel me over je meest impactvolle project en jouw rol daarin."
+        "question": "Vertel me over Jelle's meest impactvolle projecten."
       },
       "background": {
         "label": "Achtergrond",
-        "question": "Wat is je opleidingsachtergrond en hoe ben je in de ontwikkeling terechtgekomen?"
+        "question": "Wat is Jelle's opleidingsachtergrond en hoe is hij in de ontwikkeling terechtgekomen?"
       },
       "hireMe": {
         "label": "Waarom mij aannemen?",
-        "question": "Wat maakt jou uniek als ontwikkelaar en teamgenoot?"
+        "question": "Wat maakt Jelle uniek als ontwikkelaar en teamgenoot?"
       }
     }
   }
