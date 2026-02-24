@@ -11,6 +11,12 @@ const llmProviders: LlmConfig[] = [
     modelName: config.llm.modelNameGemini
   },
   {
+    tier: 'smart',
+    type: 'mistral',
+    apiKey: config.llm.apiKeyMistral,
+    modelName: config.llm.modelNameMistralMedium
+  },
+  {
     tier: 'fast',
     type: 'gemini',
     apiKey: config.llm.apiKeyGemini,

@@ -32,7 +32,9 @@ export const config = {
     modelNameGemini: env.LLM_MODEL_GEMINI,
     modelNameGeminiLite: env.LLM_MODEL_GEMINI_LITE,
     apiKeyGroq: env.LLM_API_KEY_GROQ,
-    modelNameGroq: env.LLM_MODEL_GROQ
+    modelNameGroq: env.LLM_MODEL_GROQ,
+    apiKeyMistral: env.LLM_API_KEY_MISTRAL,
+    modelNameMistralMedium: env.LLM_MODEL_MISTRAL
   }
 };
 
