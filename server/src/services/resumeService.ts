@@ -1,6 +1,6 @@
 import { redis } from '@/database/redis';
 import { llmProvider } from '@/llm';
-import { ILlmProvider } from '@/llm/ILlmProvider';
+import LlmManager from '@/llm/LlmManager';
 import { PromptUtils } from '@/llm/PromptUtils';
 import { ChatResponseDto, GetModelResponseDto, Message } from '@/schemas/chatSchema';
 import crypto from 'crypto';
@@ -8,12 +8,12 @@ import { v4 as uuidv4 } from 'uuid';
 import VectorService from './VectorService';
 
 export default class ResumeService {
-  private llm: ILlmProvider;
+  private llm: LlmManager;
   private vectoryService: VectorService;
   private readonly MAX_HISTORY = 12;
   private readonly CACHE_TTL = 60 * 60 * 24; // 24 hours
 
-  constructor(llm: ILlmProvider, vectorService: VectorService) {
+  constructor(llm: LlmManager, vectorService: VectorService) {
     this.llm = llm;
     this.vectoryService = vectorService;
   }

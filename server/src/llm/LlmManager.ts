@@ -1,7 +1,7 @@
 import { Message } from '@/schemas/chatSchema';
-import { ILlmProvider, LlmResponse } from './ILlmProvider';
+import { ILlmProvider, LlmResponse, ProviderTier } from './ILlmProvider';
 
-export default class LlmManager implements ILlmProvider {
+export default class LlmManager {
   private providers: ILlmProvider[];
   private currentIndex: number;
 
@@ -11,12 +11,22 @@ export default class LlmManager implements ILlmProvider {
     this.currentIndex = 0;
   }
 
-  public async generateContent(messages: Message[]): Promise<LlmResponse> {
-    const totalAmountOfProviders = this.providers.length;
+  public async generateContent(
+    messages: Message[],
+    tier: ProviderTier = 'smart'
+  ): Promise<LlmResponse> {
+    const priotizedProviders = [
+      ...this.providers.filter(p => p.tier === tier),
+      ...this.providers.filter(p => p.tier !== tier)
+    ];
+
+    console.log(priotizedProviders);
+
+    const totalAmountOfProviders = priotizedProviders.length;
 
     for (let i = 0; i < totalAmountOfProviders; i++) {
       const attemptIndex = (this.currentIndex + i) % totalAmountOfProviders;
-      const provider = this.providers[attemptIndex];
+      const provider = priotizedProviders[attemptIndex];
 
       try {
         const result = await provider.generateContent(messages);

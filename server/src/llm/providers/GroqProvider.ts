@@ -1,13 +1,15 @@
 import { Message } from '@/schemas/chatSchema';
 import Groq from 'groq-sdk';
 import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat.mjs';
-import { ILlmProvider, LlmConfig, LlmResponse } from '../ILlmProvider';
+import { ILlmProvider, LlmConfig, LlmResponse, ProviderTier } from '../ILlmProvider';
 
 export class GroqProvider implements ILlmProvider {
+  public readonly tier: ProviderTier;
   private client: Groq;
   private llmConfig: LlmConfig;
 
   constructor(llmConfig: LlmConfig) {
+    this.tier = llmConfig.tier;
     this.client = new Groq({ apiKey: llmConfig.apiKey });
     this.llmConfig = llmConfig;
   }

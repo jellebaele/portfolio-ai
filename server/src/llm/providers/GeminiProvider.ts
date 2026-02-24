@@ -1,12 +1,14 @@
 import { Message } from '@/schemas/chatSchema';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { ILlmProvider, LlmConfig, LlmResponse } from '../ILlmProvider';
+import { ILlmProvider, LlmConfig, LlmResponse, ProviderTier } from '../ILlmProvider';
 
 export default class GeminiProvider implements ILlmProvider {
+  public readonly tier: ProviderTier;
   private client: GoogleGenerativeAI;
   private llmConfig: LlmConfig;
 
   constructor(llmConfig: LlmConfig) {
+    this.tier = llmConfig.tier;
     this.llmConfig = llmConfig;
     this.client = new GoogleGenerativeAI(llmConfig.apiKey as string);
   }

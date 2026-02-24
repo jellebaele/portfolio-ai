@@ -4,13 +4,19 @@ import LlmFactory from './LlmFactory';
 import LlmManager from './LlmManager';
 
 const llmProviders: LlmConfig[] = [
-  // { type: 'gemini', apiKey: config.llm.apiKeyGemini, modelName: config.llm.modelNameGemini },
   {
+    tier: 'smart',
+    type: 'gemini',
+    apiKey: config.llm.apiKeyGemini,
+    modelName: config.llm.modelNameGemini
+  },
+  {
+    tier: 'fast',
     type: 'gemini',
     apiKey: config.llm.apiKeyGemini,
     modelName: config.llm.modelNameGeminiLite
   },
-  { type: 'groq', apiKey: config.llm.apiKeyGroq, modelName: config.llm.modelNameGroq }
+  { tier: 'fast', type: 'groq', apiKey: config.llm.apiKeyGroq, modelName: config.llm.modelNameGroq }
 ];
 
 const providers = llmProviders.map(p => LlmFactory.create(p));
