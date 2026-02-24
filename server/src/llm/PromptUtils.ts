@@ -40,7 +40,7 @@ export class PromptUtils {
     `.trim();
   }
 
-  static buildStandaloneQueryPrompt(userPrompt: string, history: Message[]): string {
+  static buildStandaloneSearchQueryPrompt(userPrompt: string, history: Message[]): string {
     const historyString = this.mapHistoryToString(history);
 
     return `

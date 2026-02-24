@@ -1,49 +1,49 @@
 import { vectorIndex } from '@/database/vectorDatabase';
+import { ILlmProvider } from '@/llm/ILlmProvider';
+import { PromptUtils } from '@/llm/PromptUtils';
 import { Message } from '@/schemas/chatSchema';
 
 export default class VectorService {
-  private readonly SIMILARITY_THRESHOLD = 0.75;
+  private llm: ILlmProvider;
+  private readonly SIMILARITY_THRESHOLD = 0.65;
+
+  constructor(llm: ILlmProvider) {
+    this.llm = llm;
+  }
 
   public async getRelevantContext(
     lastUserPrompt: string,
     historyBeforeLast: Message[]
   ): Promise<string> {
-    const query = this.createSearchQuery(lastUserPrompt, historyBeforeLast);
+    const searchableQuery = await this.generateStandaloneQuery(lastUserPrompt, historyBeforeLast);
+    console.log(`🔍 Original: "${lastUserPrompt}" -> Rewritten: "${searchableQuery}"`);
 
     const queryResult = await vectorIndex.query({
-      data: query,
-      topK: 5,
-      includeData: true,
-      includeVectors: false
+      data: searchableQuery,
+      topK: 7,
+      includeData: true
     });
 
     const filteredResults = queryResult.filter(
       match => (match.score ?? 0) >= this.SIMILARITY_THRESHOLD
     );
 
-    if (filteredResults.length === 0) {
-      return '';
-    }
-
-    return queryResult.map(match => match.data).join('\n\n');
+    console.log(`Vectorsearch results: ${filteredResults.map(match => match.data).join('\n\n')}`);
+    if (filteredResults.length === 0) return '';
+    return filteredResults.map(match => match.data).join('\n\n');
   }
 
-  private createSearchQuery(lastUserPrompt: string, historyBeforeLast: Message[]): string {
-    const lastUserMessage = historyBeforeLast.filter(m => m.role === 'user').at(-1)?.content || '';
-    const combinedQuery = `${lastUserMessage} ${lastUserPrompt}`.trim();
+  private async generateStandaloneQuery(
+    lastUserPrompt: string,
+    historyBeforeLast: Message[]
+  ): Promise<string> {
+    if (historyBeforeLast.length === 0) return lastUserPrompt;
+    const response = await this.llm.generateContent(
+      PromptUtils.buildStandaloneSearchQueryPrompt(lastUserPrompt, historyBeforeLast),
+      [],
+      ''
+    );
 
-    // OPTION TO LOOK INTO:
-    // if (historyBeforeLast.length > 0) {
-    //   const rewritePrompt = PromptUtils.buildStandaloneQueryPrompt(
-    //     lastUserPrompt,
-    //     historyBeforeLast
-    //   );
-
-    //   // We call the LLM once just to get the search terms
-    //   const rewriteResponse = await this.llm.generateContent(rewritePrompt, [], '');
-    //   searchQuery = rewriteResponse.aiResponse;
-    // }
-
-    return combinedQuery;
+    return response.aiResponse;
   }
 }

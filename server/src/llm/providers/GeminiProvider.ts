@@ -27,7 +27,6 @@ export default class GeminiProvider implements ILlmProvider {
       context,
       PromptUtils.mapHistoryToString(history)
     );
-
     const aiContent = await this.model.generateContent(prompt);
     return {
       aiResponse: aiContent.response.text(),
