@@ -11,11 +11,7 @@ export default class LlmManager implements ILlmProvider {
     this.currentIndex = 0;
   }
 
-  public async generateContent(
-    userPrompt: string,
-    history: Message[],
-    context: string
-  ): Promise<LlmResponse> {
+  public async generateContent(messages: Message[]): Promise<LlmResponse> {
     const totalAmountOfProviders = this.providers.length;
 
     for (let i = 0; i < totalAmountOfProviders; i++) {
@@ -23,7 +19,7 @@ export default class LlmManager implements ILlmProvider {
       const provider = this.providers[attemptIndex];
 
       try {
-        const result = await provider.generateContent(userPrompt, history, context);
+        const result = await provider.generateContent(messages);
         this.currentIndex = attemptIndex;
         return result;
       } catch (error) {
