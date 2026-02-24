@@ -39,6 +39,7 @@ const WelcomeScreen = ({ onSuggestionClick }: WelcomeScreenProps) => {
       >
         {suggestions.map((s, i) => (
           <WelcomeSuggestion
+            key={i}
             onSuggestionClick={onSuggestionClick}
             index={i}
             question={t(`welcomeScreen.suggestions.${s.id}.question` as any)}
