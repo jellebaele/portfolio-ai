@@ -1,5 +1,5 @@
+import ChatHeader from '@/components/chat-header/ChatHeader';
 import ChatMessageItem from '@/components/chat-message/ChatMessage';
-import ChatHeader from '@/components/ChatHeader';
 import ChatInput from '@/components/ChatInput';
 import TypingIndicator from '@/components/TypingIndicator';
 import WelcomeScreen from '@/components/welcome-screen/WelcomeScreen';

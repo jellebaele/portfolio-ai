@@ -31,7 +31,8 @@ const LanguageSelector = () => {
         className='flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-primary/40'
         onClick={() => setOpen(open => !open)}
       >
-        {language.label}
+        <span className='sm:hidden'>{language.shortLabel}</span>
+        <span className='hidden sm:inline'>{language.label}</span>
         <ChevronDown
           className={`h-3 w-3 text-muted-foreground transition-transform ${open ? 'rotate-180' : ''}`}
         />
@@ -44,8 +45,8 @@ const LanguageSelector = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.15 }}
-            className='absolute right-0 top-full z-50 mt-1.5 min-w-30 overflow-hidden
-            rounded-lg border border-border bg-popover shadow-lg'
+            className='absolute right-0 top-full z-50 mt-1.5 overflow-hidden
+            rounded-lg border border-border bg-popover shadow-lg min-w-15 sm:min-w-30'
           >
             {supportedLanguages.map(language => (
               <button
@@ -55,7 +56,8 @@ const LanguageSelector = () => {
                 }`}
                 onClick={() => handleLanguageChange(language)}
               >
-                {language.label}
+                <span className='sm:hidden'>{language.shortLabel}</span>
+                <span className='hidden sm:inline'>{language.label}</span>
               </button>
             ))}
           </motion.div>

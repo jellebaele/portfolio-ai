@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export type Language = { code: string; label: string };
+export type Language = { code: string; label: string; shortLabel: string };
 
 const supportedLanguages: Language[] = [
-  { code: 'en', label: 'English' },
-  { code: 'nl', label: 'Nederlands' }
+  { code: 'en', label: 'English', shortLabel: 'EN' },
+  { code: 'nl', label: 'Nederlands', shortLabel: 'NL' }
 ];
 
 interface LanguageContextType {
