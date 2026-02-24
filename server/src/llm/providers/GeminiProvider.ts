@@ -1,33 +1,29 @@
 import { Message } from '@/schemas/chatSchema';
-import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { ILlmProvider, LlmConfig, LlmResponse } from '../ILlmProvider';
-import { PromptUtils } from '../PromptUtils';
 
 export default class GeminiProvider implements ILlmProvider {
-  private model: GenerativeModel;
+  private client: GoogleGenerativeAI;
   private llmConfig: LlmConfig;
 
   constructor(llmConfig: LlmConfig) {
     this.llmConfig = llmConfig;
-    const genAi = new GoogleGenerativeAI(llmConfig.apiKey as string);
-
-    this.model = genAi.getGenerativeModel({
-      model: llmConfig.modelName,
-      systemInstruction: PromptUtils.buildSystemInstructions()
-    });
+    this.client = new GoogleGenerativeAI(llmConfig.apiKey as string);
   }
 
-  public async generateContent(
-    userPrompt: string,
-    history: Message[],
-    context: string
-  ): Promise<LlmResponse> {
-    const prompt = PromptUtils.buildStrictPrompt(
-      userPrompt,
-      context,
-      PromptUtils.mapHistoryToString(history)
-    );
-    const aiContent = await this.model.generateContent(prompt);
+  public async generateContent(messages: Message[]): Promise<LlmResponse> {
+    const systemInstructions = messages.filter(m => m.role === 'system');
+    const otherMessages = messages.filter(m => m.role !== 'system');
+
+    const prompt = otherMessages.map(m => `${m.role}: ${m.content}`).join('\n');
+
+    const model = this.client.getGenerativeModel({
+      model: this.llmConfig.modelName,
+      systemInstruction: systemInstructions.map(m => m.content).join('\n')
+    });
+
+    const aiContent = await model.generateContent(prompt);
+
     return {
       aiResponse: aiContent.response.text(),
       provider: this.llmConfig.type,

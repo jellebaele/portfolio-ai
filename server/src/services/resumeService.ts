@@ -1,6 +1,7 @@
 import { redis } from '@/database/redis';
 import { llmProvider } from '@/llm';
 import { ILlmProvider } from '@/llm/ILlmProvider';
+import { PromptUtils } from '@/llm/PromptUtils';
 import { ChatResponseDto, GetModelResponseDto, Message } from '@/schemas/chatSchema';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
@@ -27,12 +28,13 @@ export default class ResumeService {
     if (cached) return this.formatMessage(cached.data, cached.meta.llmModel, cached.meta.provider);
 
     const context = await this.vectoryService.getRelevantContext(lastUserPrompt, historyBeforeLast);
-
-    const { aiResponse, provider, modelName } = await this.llm.generateContent(
+    const promptMessages = PromptUtils.buildChatMessagePrompt(
       lastUserPrompt,
-      historyBeforeLast,
-      context
+      context,
+      historyBeforeLast
     );
+
+    const { aiResponse, provider, modelName } = await this.llm.generateContent(promptMessages);
 
     const response = this.formatMessage(aiResponse, modelName, provider);
     await redis.set<ChatResponseDto>(cacheKey, response, { ex: this.CACHE_TTL });

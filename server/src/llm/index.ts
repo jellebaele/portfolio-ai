@@ -4,7 +4,7 @@ import LlmFactory from './LlmFactory';
 import LlmManager from './LlmManager';
 
 const llmProviders: LlmConfig[] = [
-  { type: 'gemini', apiKey: config.llm.apiKeyGemini, modelName: config.llm.modelNameGemini },
+  // { type: 'gemini', apiKey: config.llm.apiKeyGemini, modelName: config.llm.modelNameGemini },
   {
     type: 'gemini',
     apiKey: config.llm.apiKeyGemini,

@@ -38,11 +38,12 @@ export default class VectorService {
     historyBeforeLast: Message[]
   ): Promise<string> {
     if (historyBeforeLast.length === 0) return lastUserPrompt;
-    const response = await this.llm.generateContent(
-      PromptUtils.buildStandaloneSearchQueryPrompt(lastUserPrompt, historyBeforeLast),
-      [],
-      ''
+
+    const messages = PromptUtils.buildStandaloneSearchQueryPrompt(
+      lastUserPrompt,
+      historyBeforeLast
     );
+    const response = await this.llm.generateContent(messages);
 
     return response.aiResponse;
   }

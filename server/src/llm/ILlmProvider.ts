@@ -2,7 +2,7 @@ import { Message } from '@/schemas/chatSchema';
 import { SupportedModels, SupportedProviders } from '@/schemas/envSchema';
 
 export interface ILlmProvider {
-  generateContent(userPrompt: string, history: Message[], context: string): Promise<LlmResponse>;
+  generateContent(messages: Message[]): Promise<LlmResponse>;
   getLlmModel(): string;
 }
 

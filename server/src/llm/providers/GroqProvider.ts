@@ -2,7 +2,6 @@ import { Message } from '@/schemas/chatSchema';
 import Groq from 'groq-sdk';
 import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat.mjs';
 import { ILlmProvider, LlmConfig, LlmResponse } from '../ILlmProvider';
-import { PromptUtils } from '../PromptUtils';
 
 export class GroqProvider implements ILlmProvider {
   private client: Groq;
@@ -13,20 +12,15 @@ export class GroqProvider implements ILlmProvider {
     this.llmConfig = llmConfig;
   }
 
-  async generateContent(
-    userPrompt: string,
-    history: Message[],
-    context: string
-  ): Promise<LlmResponse> {
-    const messages: ChatCompletionMessageParam[] = [
-      { role: 'system', content: PromptUtils.buildSystemInstructions() },
-      ...PromptUtils.mapHistory(history),
-      { role: 'user', content: PromptUtils.buildStrictPrompt(userPrompt, context) }
-    ];
+  async generateContent(messages: Message[]): Promise<LlmResponse> {
+    const groqMessages: ChatCompletionMessageParam[] = messages.map(m => ({
+      role: m.role,
+      content: m.content
+    }));
 
     const chatCompletion = await this.client.chat.completions.create({
       model: this.llmConfig.modelName,
-      messages: messages,
+      messages: groqMessages,
       temperature: 0.2
     });
 
