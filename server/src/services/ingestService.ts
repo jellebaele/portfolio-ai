@@ -48,6 +48,59 @@ export default class IngestService {
     return chunks;
   }
 
+  private createHierarchicalChunks(content: string): string[] {
+    const lines = content.split('\n');
+    const chunks: string[] = [];
+
+    let h1 = '',
+      h2 = '',
+      h3 = '';
+    let currentBuffer = '';
+
+    const flush = () => {
+      const contentToSave = currentBuffer.trim();
+      // Only save if there is actual content (not just a title)
+      if (contentToSave.length > 20) {
+        const contextPrefix = `[Source: ${h1}]${h2 ? ` > [Section: ${h2}]` : ''}${h3 ? ` > [Topic: ${h3}]` : ''}\n`;
+        chunks.push(contextPrefix + contentToSave);
+        currentBuffer = '';
+      }
+    };
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+
+      if (trimmed.startsWith('# ')) {
+        flush();
+        h1 = trimmed.replace('# ', '');
+        h2 = '';
+        h3 = '';
+        continue;
+      }
+      if (trimmed.startsWith('## ')) {
+        flush();
+        h2 = trimmed.replace('## ', '');
+        h3 = '';
+        continue;
+      }
+      if (trimmed.startsWith('### ')) {
+        flush();
+        h3 = trimmed.replace('### ', '');
+        continue;
+      }
+
+      currentBuffer += line + '\n';
+
+      if (currentBuffer.length >= this.CHUNK_SIZE) {
+        flush();
+      }
+    }
+
+    flush();
+    return chunks;
+  }
+
   private createChunkId(file: string, index: number): string {
     return `${file}-${index}`;
   }
