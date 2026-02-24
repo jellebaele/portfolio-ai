@@ -21,7 +21,7 @@ const WelcomeScreen = ({ onSuggestionClick }: WelcomeScreenProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className='flex flex-1 flex-col items-center justify-center px-4'>
+    <div className='flex flex-1 flex-col items-center justify-center px-4 mb-3'>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
