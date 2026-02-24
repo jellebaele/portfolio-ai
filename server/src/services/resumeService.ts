@@ -1,19 +1,21 @@
 import { redis } from '@/database/redis';
-import { vectorIndex } from '@/database/vectorDatabase';
 import { llmProvider } from '@/llm';
 import { ILlmProvider } from '@/llm/ILlmProvider';
 import { ChatResponseDto, GetModelResponseDto, Message } from '@/schemas/chatSchema';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
+import VectorService from './VectorService';
 
 const MAX_HISTORY = 12;
 const CACHE_TTL = 60 * 60 * 24; // 24 hours
 
 export default class ResumeService {
   private llm: ILlmProvider;
+  private vectoryService: VectorService;
 
-  constructor(llm: ILlmProvider) {
+  constructor(llm: ILlmProvider, vectorService: VectorService) {
     this.llm = llm;
+    this.vectoryService = vectorService;
   }
 
   public async processChatMessage(messages: Message[]): Promise<ChatResponseDto> {
@@ -25,12 +27,11 @@ export default class ResumeService {
     const cached = await redis.get<ChatResponseDto>(cacheKey);
     if (cached) return this.formatMessage(cached.data, cached.meta.llmModel, cached.meta.provider);
 
-    const context = await this.getRelevantContext(
-      this.createSearchQuery(lastUserPrompt, historyBeforeLast)
-    );
+    const context = await this.vectoryService.getRelevantContext(lastUserPrompt, historyBeforeLast);
+
     const { aiResponse, provider, modelName } = await this.llm.generateContent(
       lastUserPrompt,
-      trimmedHistory.slice(0, trimmedHistory.length - 1),
+      historyBeforeLast,
       context
     );
 
@@ -56,16 +57,6 @@ export default class ResumeService {
     return crypto.createHash('md5').update(prompt).digest('hex');
   }
 
-  // TODO move to appropriate class
-  private async getRelevantContext(query: string): Promise<string> {
-    const queryResult = await vectorIndex.query({
-      data: query,
-      topK: 5,
-      includeData: true
-    });
-    return queryResult.map(match => match.data).join('\n\n');
-  }
-
   private formatMessage(data: string, modelName: string, provider: string): ChatResponseDto {
     return {
       id: uuidv4(),
@@ -77,24 +68,5 @@ export default class ResumeService {
         provider: provider
       }
     };
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private createSearchQuery(lastUserPrompt: string, historyBeforeLast: Message[]): string {
-    const searchQuery = lastUserPrompt;
-
-    // OPTION TO LOOK INTO:
-    // if (historyBeforeLast.length > 0) {
-    //   const rewritePrompt = PromptUtils.buildStandaloneQueryPrompt(
-    //     lastUserPrompt,
-    //     historyBeforeLast
-    //   );
-
-    //   // We call the LLM once just to get the search terms
-    //   const rewriteResponse = await this.llm.generateContent(rewritePrompt, [], '');
-    //   searchQuery = rewriteResponse.aiResponse;
-    // }
-
-    return searchQuery;
   }
 }
