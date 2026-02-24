@@ -6,12 +6,11 @@ import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import VectorService from './VectorService';
 
-const MAX_HISTORY = 12;
-const CACHE_TTL = 60 * 60 * 24; // 24 hours
-
 export default class ResumeService {
   private llm: ILlmProvider;
   private vectoryService: VectorService;
+  private readonly MAX_HISTORY = 12;
+  private readonly CACHE_TTL = 60 * 60 * 24; // 24 hours
 
   constructor(llm: ILlmProvider, vectorService: VectorService) {
     this.llm = llm;
@@ -19,7 +18,7 @@ export default class ResumeService {
   }
 
   public async processChatMessage(messages: Message[]): Promise<ChatResponseDto> {
-    const trimmedHistory = messages.slice(-MAX_HISTORY);
+    const trimmedHistory = messages.slice(-this.MAX_HISTORY);
     const lastUserPrompt = trimmedHistory.filter(m => m.role === 'user').at(-1)?.content || '';
     const historyBeforeLast = trimmedHistory.slice(0, -1);
 
@@ -36,7 +35,7 @@ export default class ResumeService {
     );
 
     const response = this.formatMessage(aiResponse, modelName, provider);
-    await redis.set<ChatResponseDto>(cacheKey, response, { ex: CACHE_TTL });
+    await redis.set<ChatResponseDto>(cacheKey, response, { ex: this.CACHE_TTL });
 
     return response;
   }
