@@ -1,0 +1,27 @@
+services:
+  server:
+    build:
+      context: ./server
+    container_name: node_server
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    ports:
+      - 5000:5000
+
+  client:
+    build:
+      context: ./client
+      args:
+        # Pass build-time env vars to Vite
+        VITE_API_URL: ${VITE_API_URL}
+    container_name: react_client
+    restart: unless-stopped
+    env_file:
+      - ./client/.env
+    ports:
+      - 3002:80
+
+networks:
+  default:
+    name: app_network
