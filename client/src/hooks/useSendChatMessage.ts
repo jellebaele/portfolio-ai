@@ -1,4 +1,4 @@
-import type ChatMessage from '@/models/test';
+import type ChatMessage from '@/models/chatMessage';
 import { chatService } from '@/services';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
