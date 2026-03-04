@@ -16,9 +16,12 @@ const HowItWorksPage = () => {
   const { isSystemError } = useChat();
   const { language } = useLanguage();
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const filePath = `/content/${language.code}/how-it-works.md`;
+
     fetch(filePath)
       .then(res => {
         if (!res.ok) throw new Error(`Failed to load markdown: ${res.status}`);
@@ -26,13 +29,19 @@ const HowItWorksPage = () => {
       })
       .then(data => {
         setContent(data);
-      });
-  }, [language]);
+      })
+      .finally(() => setIsLoading(false));
+    return () => {
+      setIsLoading(false);
+    };
+  }, [language.code]);
 
   return (
     <div className='flex min-h-screen flex-col bg-background text-foreground'>
       <ChatHeader isSystemError={isSystemError} onIconClick={() => navigate('/')} />
-      {content ? (
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -49,8 +58,6 @@ const HowItWorksPage = () => {
             </Button>
           </div>
         </motion.div>
-      ) : (
-        <LoadingScreen />
       )}
     </div>
   );
