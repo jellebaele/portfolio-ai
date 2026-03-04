@@ -18,7 +18,6 @@ export const createApp = (): Express => {
 
   // Parsers
   app.use(express.json());
-
   app.disable('x-powered-by');
 
   // Routes
