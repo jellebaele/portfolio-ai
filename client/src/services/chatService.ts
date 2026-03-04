@@ -1,5 +1,5 @@
 import type { ChatResponseDto, GetActiveModelResponseDto } from '@/models/chatDto';
-import type ChatMessage from '@/models/chatMessage';
+import type ChatMessage from '@/models/test';
 import axios, { type AxiosInstance } from 'axios';
 
 export default class ChatService {
