@@ -1,11 +1,11 @@
 import ChatHeader from '@/components/chat-header/ChatHeader';
-import ChatMessageItem from '@/components/chat-message/ChatMessage';
+import ChatMessageItem from '@/components/chat-message/ChatMessageItem';
 import ChatInput from '@/components/ChatInput';
 import TypingIndicator from '@/components/TypingIndicator';
 import WelcomeScreen from '@/components/welcome-screen/WelcomeScreen';
 import { useChat } from '@/context/ChatContext';
 import { useSendChatMessage } from '@/hooks/useSendChatMessage';
-import type ChatMessage from '@/models/chatMessage';
+import type ChatMessage from '@/models/TmpChatMessage';
 import { AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
