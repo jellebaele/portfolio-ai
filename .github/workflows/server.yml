@@ -37,7 +37,7 @@ jobs:
 
       - name: Trigger Dokploy Deployment
         run: |
-          curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}" \
+          curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL_SERVER }}" \
             -H "CF-Access-Client-Id: ${{ secrets.CF_ACCESS_CLIENT_ID }}" \
             -H "CF-Access-Client-Secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}" \
             -H "Content-Type: application/json"
