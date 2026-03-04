@@ -4,8 +4,8 @@ FROM node:25-alpine3.22 AS builder
 
 WORKDIR /app
 
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
+ARG VITE_BASE_URL_CHAT_API
+ENV VITE_BASE_URL_CHAT_API=$VITE_BASE_URL_CHAT_API
 
 # Copy dependency files first (better caching)
 COPY package*.json ./

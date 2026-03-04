@@ -14,7 +14,7 @@ services:
       context: ./client
       args:
         # Pass build-time env vars to Vite
-        VITE_API_URL: ${VITE_API_URL}
+        VITE_BASE_URL_CHAT_API: http://localhost:5000
     container_name: react_client
     restart: unless-stopped
     env_file:
