@@ -15,7 +15,7 @@
     },
     "suggestions": {
       "technical": {
-        "label": "Technical Skills",
+        "label": "Technical skills",
         "question": "What programming languages and technologies does Jelle work with?"
       },
       "experience": {
@@ -27,7 +27,7 @@
         "question": "What is Jelle's background and how did he start in development?"
       },
       "hireMe": {
-        "label": "Why Hire Jelle",
+        "label": "Why hire Jelle",
         "question": "What makes Jelle stand out as a developer and teammate?"
       }
     }
