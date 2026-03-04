@@ -13,14 +13,10 @@ To optimize for both cost and user experience, the system uses a tiered intellig
 
 The AI doesn't "hallucinate" my experiences. When a question is asked:
 
-1. The system retrieves relevant snippets from my verified `.md`. The data is stored in a `Vector Database` and the query makes use of a fast tier LLM to make sure context is considered when querying
-   the vector db.
-2. This data is injected into the "System Prompt" as the single source of truth.
-3. The LLM generates a response strictly based on this provided context.
-4. **Vector Search:** All the data is tokenized and stored in a Vector Database.
-5. **Contextual Querying:** When you ask a question, a Fast-Tier LLM reformulates your query to ensure the most relevant embeddings are retrieved from the database.
-6. **Augmentation:** This retrieved data is injected into the "System Prompt" as the single source of truth.
-7. **Generation:** The final LLM generates a response strictly based on this provided context.
+1. **Vector Search:** All the data is tokenized and stored in a Vector Database.
+2. **Contextual Querying:** When you ask a question, a Fast-Tier LLM reformulates your query to ensure the most relevant embeddings are retrieved from the database.
+3. **Augmentation:** This retrieved data is injected into the "System Prompt" as the single source of truth.
+4. **Generation:** The final LLM generates a response strictly based on this provided context.
 
 ### 3. Resilience & Failover
 
