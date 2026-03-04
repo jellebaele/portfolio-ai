@@ -12,7 +12,7 @@ export const createApp = (): Express => {
 
   // Security & Logging
   app.use(helmet());
-  app.use(cors());
+  app.use(cors(config.corsOptions));
   app.use(morgan(isProduction ? 'combined' : 'dev'));
   app.use(rateLimit(config.ratelimit));
 

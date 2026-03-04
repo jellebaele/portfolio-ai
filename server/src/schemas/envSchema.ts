@@ -13,6 +13,7 @@ export const envSchema = z.object({
   NODE_ENV: z.enum(['DEVELOPMENT', 'PRODUCTION']),
   RATELIMIT_WINDOW_MS: z.coerce.number().default(FIFTEEN_MINUTES),
   RATELIMIT_LIMIT: z.coerce.number().default(100),
+  CORS_ORIGIN: z.string().min(1),
   UPSTASH_VECTOR_REST_URL: z.string().min(1),
   UPSTASH_VECTOR_REST_TOKEN: z.string().min(1),
   UPSTASH_REDIS_REST_URL: z.string().min(1),

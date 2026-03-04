@@ -1,4 +1,5 @@
 import { envSchema } from '@/schemas/envSchema';
+import { CorsOptions } from 'cors';
 import 'dotenv/config';
 
 const result = envSchema.safeParse(process.env);
@@ -19,6 +20,10 @@ export const config = {
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
     ipv6Subnet: 56 // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
   } as const,
+  corsOptions: {
+    origin: env.CORS_ORIGIN,
+    optionsSuccessStatus: 200
+  } as CorsOptions,
   database: {
     upstashVectorUrl: env.UPSTASH_VECTOR_REST_URL,
     upstashVectorToken: env.UPSTASH_VECTOR_REST_TOKEN
