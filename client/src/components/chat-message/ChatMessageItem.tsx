@@ -1,4 +1,4 @@
-import type ChatMessage from '@/models/TmpChatMessage';
+import type ChatMessage from '@/models/ChatMessage';
 import { motion } from 'motion/react';
 import ReactMarkdown from 'react-markdown';
 import MessageAvatar from './MessageAvatar';

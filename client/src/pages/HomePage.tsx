@@ -5,7 +5,7 @@ import TypingIndicator from '@/components/TypingIndicator';
 import WelcomeScreen from '@/components/welcome-screen/WelcomeScreen';
 import { useChat } from '@/context/ChatContext';
 import { useSendChatMessage } from '@/hooks/useSendChatMessage';
-import type ChatMessage from '@/models/TmpChatMessage';
+import type ChatMessage from '@/models/ChatMessage';
 import { AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
