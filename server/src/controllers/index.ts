@@ -1,3 +1,3 @@
-import { ChatController } from './test';
+import { ChatController } from './ChatController';
 
 export const chatController = new ChatController();
