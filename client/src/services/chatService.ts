@@ -15,9 +15,7 @@ export default class ChatService {
   public async sendChatMessage(messages: ChatMessage[]): Promise<ChatResponseDto> {
     const response = await this.httpClient.post<ChatResponseDto>('/api/v1/chat', { messages });
 
-    if (response.status !== 200) {
-      throw new Error('Failed to fetch AI response');
-    }
+    if (response.status !== 200) throw new Error('Failed to fetch AI response');
 
     return response.data;
   }
