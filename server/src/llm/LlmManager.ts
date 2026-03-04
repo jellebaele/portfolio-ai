@@ -20,8 +20,6 @@ export default class LlmManager {
       ...this.providers.filter(p => p.tier !== tier)
     ];
 
-    console.log(priotizedProviders);
-
     const totalAmountOfProviders = priotizedProviders.length;
 
     for (let i = 0; i < totalAmountOfProviders; i++) {
