@@ -27,7 +27,7 @@ const ChatMessageItem = ({ message }: ChatMessageProps) => {
           {isUser ? (
             <p>{message.content}</p>
           ) : (
-            <div className='prose prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-headings:text-foreground prose-strong:text-foreground prose-code:text-primary prose-code:bg-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-pre:bg-secondary prose-pre:border prose-pre:border-border'>
+            <div className='prose prose-sm max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-a:text-primary prose-code:text-primary prose-code:bg-secondary prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-th:text-foreground prose-td:text-muted-foreground prose-li:text-muted-foreground prose-hr:border-border prose-table:border-border prose-th:border-border prose-td:border-border prose-thead:border-border prose-tr:border-border'>
               <ReactMarkdown>{message.content}</ReactMarkdown>
             </div>
           )}
