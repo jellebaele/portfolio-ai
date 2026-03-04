@@ -1,0 +1,44 @@
+name: Build and Push Client
+
+on:
+  push:
+    paths:
+      - 'client/**'
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and Push Docker image
+        run: |
+          docker buildx build \
+            --platform linux/arm64 \
+            --build-arg VITE_BASE_URL_CHAT_API=${{ vars.VITE_BASE_URL_CHAT_API }} \
+            --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
+            -t ghcr.io/${{ github.repository_owner }}/ai-portfolio-client:latest \
+            -t ghcr.io/${{ github.repository_owner }}/ai-portfolio-client:${{ github.sha }} \
+            --push \
+            ./client
+
+      - name: Trigger Dokploy Deployment
+        run: |
+          curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL_CLIENT }}" \
+            -H "CF-Access-Client-Id: ${{ secrets.CF_ACCESS_CLIENT_ID }}" \
+            -H "CF-Access-Client-Secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}" \
+            -H "Content-Type: application/json"
