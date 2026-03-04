@@ -44,11 +44,13 @@ const HomePage = () => {
     mutate(updatedHistory);
   };
 
+  const clearMessage = () => setMessages([]);
+
   const hasMessages = messages.length > 0;
 
   return (
     <div className='flex h-screen flex-col bg-background'>
-      <ChatHeader isSystemError={isError} />
+      <ChatHeader isSystemError={isError} onClickClearMessage={clearMessage} />
       <div ref={scrollRef} className='flex flex-1 flex-col overflow-y-auto'>
         {!hasMessages ? (
           <WelcomeScreen onSuggestionClick={handleSend} />
