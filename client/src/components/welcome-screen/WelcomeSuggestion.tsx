@@ -1,6 +1,7 @@
 import type { LucideProps } from 'lucide-react';
 import { motion } from 'motion/react';
 import React from 'react';
+
 type WelcomeSuggestionProps = {
   onSuggestionClick: (question: string) => void;
   index: number;
@@ -10,6 +11,7 @@ type WelcomeSuggestionProps = {
   >;
   label: string;
 };
+
 const WelcomeSuggestion = ({
   onSuggestionClick,
   index,
@@ -21,10 +23,10 @@ const WelcomeSuggestion = ({
     <>
       <motion.button
         key={index}
-        whileHover={{ scale: 1.02, backgroundColor: 'hsl(var(--secondary))' }}
+        whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => onSuggestionClick(question)}
-        className='flex items-start gap-3 rounded-xl border border-border bg-card p-4 text-left transition-colors hover:border-primary/30'
+        className='flex items-start gap-3 rounded-xl border border-border bg-card p-4 text-left transition-colors hover:border-primary/30 hover:bg-secondary'
       >
         <Icon className='mt-0.5 h-5 w-5 shrink-0 text-primary' />
         <div>

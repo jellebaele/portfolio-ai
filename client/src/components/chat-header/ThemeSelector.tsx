@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 
 const ThemeSelector = () => {
   const { theme, toggleTheme } = useTheme();
+
   return (
     <button
       onClick={toggleTheme}
