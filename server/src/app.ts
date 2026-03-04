@@ -22,7 +22,6 @@ export const createApp = (): Express => {
 
   // Routes
   app.use('/api/v1', apiRouter);
-
   app.use(errorHandler);
 
   return app;
