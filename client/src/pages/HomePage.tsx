@@ -17,18 +17,18 @@ const HomePage = () => {
     setMessages(prev => [...prev, aiMsg]);
     setModel(aiMsg.meta?.llmModel || 'No model');
   });
-  useViewportHeight();
+  useViewportHeight(scrollToBottom);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
+  function scrollToBottom() {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
         behavior: 'smooth'
       });
     }
-  };
+  }
 
   useEffect(() => {
     requestAnimationFrame(scrollToBottom);
