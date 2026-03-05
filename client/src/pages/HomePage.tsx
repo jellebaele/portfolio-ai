@@ -5,6 +5,7 @@ import TypingIndicator from '@/components/TypingIndicator';
 import WelcomeScreen from '@/components/welcome-screen/WelcomeScreen';
 import { useChat } from '@/context/ChatContext';
 import { useSendChatMessage } from '@/hooks/useSendChatMessage';
+import { useViewportHeight } from '@/hooks/useViewportHeight';
 import type ChatMessage from '@/models/ChatMessage';
 import { AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
@@ -16,6 +17,7 @@ const HomePage = () => {
     setMessages(prev => [...prev, aiMsg]);
     setModel(aiMsg.meta?.llmModel || 'No model');
   });
+  useViewportHeight();
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +31,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    scrollToBottom();
+    requestAnimationFrame(scrollToBottom);
   }, [messages, isPending]);
 
   const handleSend = async (content: string) => {
@@ -49,9 +51,9 @@ const HomePage = () => {
   const hasMessages = messages.length > 0;
 
   return (
-    <div className='flex h-screen flex-col bg-background'>
+    <div className='flex h-(--app-height) flex-col bg-background'>
       <ChatHeader isSystemError={isError} onIconClick={clearMessage} />
-      <div ref={scrollRef} className='flex flex-1 flex-col overflow-y-auto'>
+      <div ref={scrollRef} className='flex flex-1 flex-col overflow-y-auto overscroll-contain'>
         {!hasMessages ? (
           <WelcomeScreen onSuggestionClick={handleSend} />
         ) : (
@@ -66,12 +68,14 @@ const HomePage = () => {
         )}
       </div>
 
-      <ChatInput
-        onSend={handleSend}
-        lastUserMessage={messages[messages.length - 2]?.content ?? ''}
-        isLoading={isPending}
-        isError={isError}
-      />
+      <div className='sticky bottom-0 bg-background pb-[env(safe-area-inset-bottom)]'>
+        <ChatInput
+          onSend={handleSend}
+          lastUserMessage={messages[messages.length - 2]?.content ?? ''}
+          isLoading={isPending}
+          isError={isError}
+        />
+      </div>
     </div>
   );
 };
