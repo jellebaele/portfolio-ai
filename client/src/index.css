@@ -143,7 +143,12 @@
 
   html,
   body {
-    height: 100%;
+    height: 100%; /* Use 100dvh to stay synced with the dynamic viewport */
+    width: 100%;
+
+    overflow: hidden;
+    position: fixed;
+    overscroll-behavior: none;
   }
 
   body {

@@ -4,8 +4,8 @@ import ChatInput from '@/components/ChatInput';
 import TypingIndicator from '@/components/TypingIndicator';
 import WelcomeScreen from '@/components/welcome-screen/WelcomeScreen';
 import { useChat } from '@/context/ChatContext';
+import { useChatAutoScroll } from '@/hooks/useChatAutoScroll';
 import { useSendChatMessage } from '@/hooks/useSendChatMessage';
-import { useViewportHeight } from '@/hooks/useViewportHeight';
 import type ChatMessage from '@/models/ChatMessage';
 import { AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
@@ -17,7 +17,8 @@ const HomePage = () => {
     setMessages(prev => [...prev, aiMsg]);
     setModel(aiMsg.meta?.llmModel || 'No model');
   });
-  useViewportHeight(scrollToBottom);
+  // useViewportHeight(scrollToBottom);
+  useChatAutoScroll(scrollToBottom);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +32,7 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    requestAnimationFrame(scrollToBottom);
+    if (messages.length > 0 || isPending) requestAnimationFrame(scrollToBottom);
   }, [messages, isPending]);
 
   const handleSend = async (content: string) => {
@@ -51,9 +52,9 @@ const HomePage = () => {
   const hasMessages = messages.length > 0;
 
   return (
-    <div className='flex h-(--app-height) flex-col bg-background'>
+    <div className='flex h-dvh flex-col bg-background'>
       <ChatHeader isSystemError={isError} onIconClick={clearMessage} />
-      <div ref={scrollRef} className='flex flex-1 flex-col overflow-y-auto overscroll-contain'>
+      <div ref={scrollRef} className='flex flex-1 flex-col overflow-y-auto overscroll-contain mt-3'>
         {!hasMessages ? (
           <WelcomeScreen onSuggestionClick={handleSend} />
         ) : (
