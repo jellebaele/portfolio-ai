@@ -47,7 +47,7 @@ const ChatInput = ({ onSend, lastUserMessage, isLoading, isError }: ChatInputPro
           onKeyDown={handleKeyDown}
           placeholder={t('chatInput.placeholder')}
           rows={1}
-          className='flex-1 resize-none bg-transparent px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none'
+          className='flex-1 resize-none bg-transparent px-3 py-2.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none'
         />
         <motion.button
           whileHover={{ scale: 1.05, cursor: 'pointer' }}
