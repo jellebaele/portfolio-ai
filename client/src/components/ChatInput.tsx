@@ -63,7 +63,9 @@ const ChatInput = ({ onSend, lastUserMessage, isLoading, isError }: ChatInputPro
           )}
         </motion.button>
       </div>
-      <p className='mt-2 text-center text-xs text-muted-foreground'>{t('chatInput.footer')}</p>
+      <p className='hidden sm:block mt-2 text-center text-xs text-muted-foreground'>
+        {t('chatInput.footer')}
+      </p>
     </div>
   );
 };
