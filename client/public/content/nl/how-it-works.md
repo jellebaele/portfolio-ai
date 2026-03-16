@@ -14,7 +14,7 @@ Om zowel de snelheid als de kwaliteit van de antwoorden te optimaliseren, maakt 
 
 De AI "fantasert" mijn ervaringen niet bij elkaar. Wanneer er een vraag wordt gesteld, volgt het systeem een strikt proces:
 
-1. **Vector Search:** Alle data is getokeniseerd en opgeslagen in een `Vector Database`.
+1. **Vector Search:** Alle data is getokeniseerd en opgeslagen in een _Vector Database_.
 2. **Contextuele Querying:** Wanneer je een vraag stelt, herformuleert een _Fast-Tier LLM_ je zoekopdracht om ervoor te zorgen dat de meest relevante "embeddings" uit de database worden opgehaald.
 3. **Augmentatie:** Deze opgehaalde data wordt in de "System Prompt" geïnjecteerd als de enige bron van waarheid.
 4. **Generatie:** De uiteindelijke LLM genereert een antwoord dat strikt gebaseerd is op deze meegeleverde context.
