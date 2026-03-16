@@ -21,8 +21,8 @@ const ChatInput = ({ onSend, lastUserMessage, isLoading, isError }: ChatInputPro
     }
   }, [input]);
 
-  const handleSubmit = () => {
-    const trimmed = isError ? lastUserMessage : input.trim();
+  const handleSubmit = (isRetry: boolean = false) => {
+    const trimmed = isRetry ? lastUserMessage : input.trim();
     if (!trimmed || isLoading) return;
     onSend(trimmed);
     setInput('');
@@ -50,16 +50,15 @@ const ChatInput = ({ onSend, lastUserMessage, isLoading, isError }: ChatInputPro
           className='flex-1 resize-none bg-transparent px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none'
         />
         <motion.button
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.05, cursor: 'pointer' }}
           whileTap={{ scale: 0.95 }}
-          onClick={handleSubmit}
           disabled={(!input.trim() || isLoading) && !isError}
           className='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:opacity-30 -translate-y-0.5'
         >
           {isError && !input.trim() ? (
-            <RotateCcw className='h-4 w-4' />
+            <RotateCcw className='h-4 w-4' onClick={() => handleSubmit(true)} />
           ) : (
-            <Send className='h-4 w-4' />
+            <Send className='h-4 w-4' onClick={() => handleSubmit()} />
           )}
         </motion.button>
       </div>
