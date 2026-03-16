@@ -1,6 +1,7 @@
 import ChatHeader from '@/components/chat-header/ChatHeader';
 import ChatMessageItem from '@/components/chat-message/ChatMessageItem';
 import ChatInput from '@/components/ChatInput';
+import PageContainer from '@/components/layout/PageContainer';
 import TypingIndicator from '@/components/TypingIndicator';
 import WelcomeScreen from '@/components/welcome-screen/WelcomeScreen';
 import { useChat } from '@/context/ChatContext';
@@ -54,7 +55,8 @@ const HomePage = () => {
   return (
     <div className='flex h-dvh flex-col bg-background'>
       <ChatHeader isSystemError={isError} onIconClick={clearMessage} />
-      <div ref={scrollRef} className='flex flex-1 flex-col overflow-y-auto overscroll-contain mt-3'>
+
+      <PageContainer ref={scrollRef} className='mt-3'>
         {!hasMessages ? (
           <WelcomeScreen onSuggestionClick={handleSend} />
         ) : (
@@ -67,7 +69,22 @@ const HomePage = () => {
             {isPending && <TypingIndicator />}
           </div>
         )}
-      </div>
+      </PageContainer>
+
+      {/* <div ref={scrollRef} className='flex flex-1 flex-col overflow-y-auto overscroll-contain mt-3'>
+        {!hasMessages ? (
+          <WelcomeScreen onSuggestionClick={handleSend} />
+        ) : (
+          <div className='flex flex-col py-4'>
+            <AnimatePresence>
+              {messages.map(msg => (
+                <ChatMessageItem key={msg.id} message={msg} />
+              ))}
+            </AnimatePresence>
+            {isPending && <TypingIndicator />}
+          </div>
+        )}
+      </div> */}
 
       <div className='sticky bottom-0 bg-background pb-[env(safe-area-inset-bottom)]'>
         <ChatInput
