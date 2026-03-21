@@ -3,6 +3,7 @@ import { SupportedModels, SupportedProviders } from '@/schemas/envSchema';
 
 export interface ILlmProvider {
   readonly tier: ProviderTier;
+  disabledUntil?: number;
   generateContent(messages: Message[]): Promise<LlmResponse>;
   getLlmModel(): string;
 }

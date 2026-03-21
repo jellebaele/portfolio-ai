@@ -4,6 +4,7 @@ import { ILlmProvider, LlmResponse, ProviderTier } from './ILlmProvider';
 export default class LlmManager {
   private providers: ILlmProvider[];
   private currentIndex: number;
+  private readonly COOLDOWN_MS = 1000 * 60 * 60;
 
   constructor(providers: ILlmProvider[]) {
     if (providers.length === 0) throw new Error('No providers were configured.');
@@ -15,24 +16,29 @@ export default class LlmManager {
     messages: Message[],
     tier: ProviderTier = 'smart'
   ): Promise<LlmResponse> {
-    const priotizedProviders = [
-      ...this.providers.filter(p => p.tier === tier),
-      ...this.providers.filter(p => p.tier !== tier)
+    const now = Date.now();
+
+    const availableProviders = this.providers.filter(
+      p => !p.disabledUntil || now > p.disabledUntil
+    );
+
+    if (availableProviders.length === 0) {
+      throw new Error('All providers are currently down or in cooldown.');
+    }
+
+    const prioritizedProviders = [
+      ...availableProviders.filter(p => p.tier === tier),
+      ...availableProviders.filter(p => p.tier !== tier)
     ];
 
-    const totalAmountOfProviders = priotizedProviders.length;
-
-    for (let i = 0; i < totalAmountOfProviders; i++) {
-      const attemptIndex = (this.currentIndex + i) % totalAmountOfProviders;
-      const provider = priotizedProviders[attemptIndex];
-
+    for (const provider of prioritizedProviders) {
       try {
         const result = await provider.generateContent(messages);
-        this.currentIndex = attemptIndex;
         return result;
       } catch (error) {
         console.error(error);
-        console.warn(`Provider at index ${attemptIndex} failed. Trying next...`);
+        console.warn(`Provider '${provider.getLlmModel()}' failed. Trying next...`);
+        provider.disabledUntil = Date.now() + this.COOLDOWN_MS;
       }
     }
 
